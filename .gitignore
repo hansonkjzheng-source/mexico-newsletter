@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.xlsx
+~$*
+.claude/
+test_js.js
