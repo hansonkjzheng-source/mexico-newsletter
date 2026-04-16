@@ -1056,13 +1056,17 @@ async function publishChanges() {
     return;
   }
   var btn = document.querySelector('.btn-publish');
-  btn.textContent = 'Saving\u2026';
-  btn.disabled = true;
 
-  /* Serialize clean HTML (no edit-mode class, no open modals) */
+  /* Serialize clean HTML: reset button, remove edit-mode, then snapshot */
+  btn.innerHTML = '&#8679; Publish';
+  btn.disabled = false;
   document.body.classList.remove('edit-mode');
   var snapshot = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
   document.body.classList.add('edit-mode');
+
+  /* Now switch to saving state (after snapshot is taken) */
+  btn.textContent = 'Saving\u2026';
+  btn.disabled = true;
 
   try {
     var res = await fetch(PUBLISH_URL, {
