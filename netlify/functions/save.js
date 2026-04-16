@@ -1,27 +1,37 @@
 const https = require('https');
 const crypto = require('crypto');
 
+const CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS'
+};
+
 exports.handler = async function(event) {
+  // Handle CORS preflight
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers: CORS, body: '' };
+  }
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return { statusCode: 405, headers: CORS, body: 'Method Not Allowed' };
   }
 
   let body;
   try {
     body = JSON.parse(event.body);
   } catch (e) {
-    return { statusCode: 400, body: 'Invalid JSON' };
+    return { statusCode: 400, headers: CORS, body: 'Invalid JSON' };
   }
 
   const { password, html } = body;
   if (!password || !html) {
-    return { statusCode: 400, body: 'Missing password or html' };
+    return { statusCode: 400, headers: CORS, body: 'Missing password or html' };
   }
 
   // Verify password
   const hash = crypto.createHash('sha256').update(password).digest('hex');
   if (hash !== process.env.SAVE_PASSWORD_HASH) {
-    return { statusCode: 401, body: 'Unauthorized' };
+    return { statusCode: 401, headers: CORS, body: 'Unauthorized' };
   }
 
   // Get current file SHA from GitHub (required for update)
@@ -34,19 +44,19 @@ exports.handler = async function(event) {
   try {
     sha = await getFileSha(owner, repo, path, token);
   } catch (e) {
-    return { statusCode: 500, body: 'Failed to get file SHA: ' + e.message };
+    return { statusCode: 500, headers: CORS, body: 'Failed to get file SHA: ' + e.message };
   }
 
   // Push updated HTML to GitHub
   try {
     await updateFile(owner, repo, path, token, html, sha);
   } catch (e) {
-    return { statusCode: 500, body: 'Failed to update file: ' + e.message };
+    return { statusCode: 500, headers: CORS, body: 'Failed to update file: ' + e.message };
   }
 
   return {
     statusCode: 200,
-    headers: { 'Access-Control-Allow-Origin': '*' },
+    headers: CORS,
     body: JSON.stringify({ ok: true })
   };
 };
