@@ -1000,8 +1000,9 @@ document.addEventListener('keydown', function(e) {
 document.getElementById('modal').addEventListener('click', function(e) {
   e.stopPropagation();
 });
-document.getElementById('pw-modal').addEventListener('click', function(e) {
-  e.stopPropagation();
+document.addEventListener('DOMContentLoaded', function() {
+  var pwModal = document.getElementById('pw-modal');
+  if (pwModal) pwModal.addEventListener('click', function(e) { e.stopPropagation(); });
 });
 
 /* ── Editor password gate ── */
