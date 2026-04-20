@@ -740,7 +740,7 @@ body.edit-mode .edit-mode-bar { display: flex; }
 </section>
 <section class="cat-section" id="section-financial" data-category="financial" style="--cat-accent:#0891b2">
 <div class="cat-header"><span class="cat-icon">💳</span><span class="cat-title">Financial Players</span><span class="cat-badge" id="badge-financial">1</span></div>
-<div class="cards-list" id="cards-financial"><div class="card" id="story-1776690152616" data-category="financial" style="--card-accent: #0891b2;"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-1776690152616')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-1776690152616')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">test</h3></div><p class="card-summary">test</p><div class="card-sources"><span class="sources-label">Sources:</span></div></div></div>
+<div class="cards-list" id="cards-financial"><div class="card" id="story-1776690152616" data-category="financial" style="--card-accent: #0891b2;"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-1776690152616')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-1776690152616')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">test111111</h3></div><p class="card-summary">test</p><div class="card-sources"><span class="sources-label">Sources:</span></div></div></div>
 <button class="btn-add" onclick="openAdd('financial')">+ Add Story</button>
 </section>
 <section class="cat-section" id="section-international" data-category="international" style="--cat-accent:#9333ea">
@@ -764,7 +764,7 @@ body.edit-mode .edit-mode-bar { display: flex; }
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
   <div class="modal-head">
-    <span class="modal-heading" id="modal-heading">Add Story — 💳 Financial Players</span>
+    <span class="modal-heading" id="modal-heading">Edit Story</span>
     <button class="modal-close" onclick="closeModal()" title="Close">×</button>
   </div>
   <div class="modal-body">
@@ -1188,7 +1188,7 @@ async function publishChanges() {
     <div class="form-group">
       <label class="form-label" for="pw-input">Password</label>
       <input id="pw-input" type="password" class="input-field" placeholder="Enter editor password" onkeydown="if(event.key==='Enter') checkEditorPassword()">
-      <p class="pw-error" id="pw-error" style="display: none;">Incorrect password — please try again.</p>
+      <p class="pw-error" id="pw-error" style="display: block;">Incorrect password — please try again.</p>
     </div>
   </div>
   <div class="modal-foot">
