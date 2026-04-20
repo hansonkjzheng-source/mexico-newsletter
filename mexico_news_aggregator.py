@@ -23,8 +23,11 @@ import anthropic
 
 TODAY = datetime.now(timezone.utc)
 ONE_WEEK_AGO = TODAY - timedelta(days=7)
-OUTPUT_FILE = "d:/AI Projects/Auto Weekly NL_202604/mexico_weekly_news.html"
-EXCEL_FILE  = "d:/AI Projects/Auto Weekly NL_202604/source_status.xlsx"
+OUTPUT_FILE      = "d:/AI Projects/Auto Weekly NL_202604/mexico_weekly_news.html"
+EXCEL_FILE       = "d:/AI Projects/Auto Weekly NL_202604/source_status.xlsx"
+EMAIL_LIST_FILE  = "d:/AI Projects/Auto Weekly NL_202604/Email List.xlsx"
+OUTLOOK_SENDER   = os.environ.get("OUTLOOK_SENDER", "")
+OUTLOOK_PASSWORD = os.environ.get("OUTLOOK_PASSWORD", "")
 
 HEADERS = {
     "User-Agent": (
@@ -376,7 +379,7 @@ def group_and_summarize(articles, client):
             '   - "financial": Any fintech or traditional bank news (Nu, Mercado Pago, BBVA, Santander, etc.)\n'
             '   - "international": International events with specific impact on Mexico\n\n'
             "Return ONLY a valid JSON array. Each element:\n"
-            '{"title":"Clear English headline (max 12 words)","summary":"100-150 word English summary",'
+            '{"title":"Descriptive English headline that fully captures the story — be specific with names, numbers, and outcomes (15-20 words if needed)","summary":"100-150 word English summary",'
             '"category":"macro|financial|international","article_ids":[list of IDs],'
             '"sources":[{"name":"Source Name","url":"article URL"}]}\n\n'
             "Important: article_ids uses the \"id\" field from the input JSON above."
@@ -521,19 +524,21 @@ def get_html_template():
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Mexico Weekly Newsletter &mdash; PLACEHOLDER_WEEK_END</title>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.js"></script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --body-bg: #eef1f6;
+  --body-bg: #f0f4f9;
   --card-bg: #ffffff;
   --text: #111827;
   --text-muted: #6b7280;
   --border: #e5e7eb;
-  --radius: 10px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-hover: 0 6px 18px rgba(0,0,0,0.11);
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radius: 14px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-hover: 0 4px 20px rgba(0,0,0,0.12);
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --mono: "JetBrains Mono", "Fira Code", "Courier New", monospace;
 }
 
@@ -543,6 +548,7 @@ body {
   color: var(--text);
   line-height: 1.6;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ══════════════════════════════════════════
@@ -550,7 +556,7 @@ body {
 ══════════════════════════════════════════ */
 .header {
   position: relative;
-  background: linear-gradient(158deg, #070e1c 0%, #0d1f3c 50%, #0a1628 100%);
+  background: linear-gradient(135deg, #060d1c 0%, #0c1d3a 60%, #0f2650 100%);
   color: #fff;
   overflow: hidden;
 }
@@ -561,6 +567,7 @@ body {
   background: linear-gradient(90deg, #006847 33.33%, #ffffff 33.33%, #ffffff 66.66%, #ce1126 66.66%);
   position: relative;
   z-index: 2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 /* Tech dot-grid pattern */
@@ -583,12 +590,13 @@ body {
 .stat-chip {
   font-family: var(--mono);
   font-size: 0.68rem;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
   color: rgba(255,255,255,0.65);
   padding: 3px 10px;
   border-radius: 4px;
   letter-spacing: 0.35px;
+  backdrop-filter: blur(4px);
 }
 .stat-chip strong {
   color: rgba(255,255,255,0.92);
@@ -612,8 +620,8 @@ body {
 .header-title {
   font-size: 2.2rem;
   font-weight: 800;
-  letter-spacing: -0.5px;
-  background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.80) 100%);
+  letter-spacing: -0.3px;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.82) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -639,21 +647,22 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 6px 14px;
+  padding: 8px 18px;
   border-radius: 99px;
   font-size: 0.77rem;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
-  background: rgba(255,255,255,0.07);
-  color: rgba(255,255,255,0.7);
-  border: 1px solid rgba(255,255,255,0.11);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.75);
+  border: 1px solid rgba(255,255,255,0.14);
   transition: background 0.18s, color 0.18s, border-color 0.18s;
   white-space: nowrap;
+  letter-spacing: 0.1px;
 }
 .cat-nav-pill:hover {
-  background: rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.16);
   color: #fff;
-  border-color: rgba(255,255,255,0.22);
+  border-color: rgba(255,255,255,0.28);
 }
 
 /* ══════════════════════════════════════════
@@ -674,25 +683,34 @@ body {
   align-items: center;
   gap: 10px;
   margin-bottom: 16px;
-  padding-bottom: 12px;
+  padding: 10px 14px 12px;
   border-bottom: 2px solid var(--cat-accent);
+  border-radius: 12px 12px 0 0;
+  background: color-mix(in srgb, var(--cat-accent) 6%, transparent);
 }
-.cat-icon { font-size: 1.25rem; }
-.cat-title {
+.cat-icon {
   font-size: 1.15rem;
+  background: color-mix(in srgb, var(--cat-accent) 14%, transparent);
+  border-radius: 8px;
+  padding: 4px 6px;
+  line-height: 1;
+}
+.cat-title {
+  font-size: 1.1rem;
   font-weight: 700;
   color: #1a1a2e;
   flex: 1;
+  letter-spacing: -0.1px;
 }
 .cat-badge {
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
   background: var(--cat-accent);
   color: #fff;
-  padding: 2px 9px;
+  padding: 3px 10px;
   border-radius: 99px;
-  min-width: 26px;
+  min-width: 28px;
   text-align: center;
 }
 
@@ -709,7 +727,7 @@ body {
 .card {
   background: var(--card-bg);
   border-radius: var(--radius);
-  border-left: 4px solid var(--card-accent, #2563eb);
+  border-left: 5px solid var(--card-accent, #2563eb);
   padding: 12px 16px 14px;
   box-shadow: var(--shadow);
   position: relative;
@@ -911,7 +929,7 @@ body.edit-mode .card:hover .card-toolbar { opacity: 1; pointer-events: auto; }
   left: 50%;
   transform: translate(-50%, -50%) scale(0.95);
   background: #fff;
-  border-radius: 14px;
+  border-radius: 16px;
   width: min(580px, 94vw);
   max-height: 88vh;
   overflow-y: auto;
@@ -1103,6 +1121,14 @@ body.edit-mode .edit-mode-bar { display: flex; }
   transition: color 0.15s, border-color 0.15s;
 }
 .btn-exit-edit:hover { color: #e2e8f0; border-color: rgba(255,255,255,0.3); }
+.btn-download-word {
+  background: #1d4ed8; color: #fff;
+  border: none;
+  padding: 5px 12px; border-radius: 99px;
+  font-size: 0.75rem; font-weight: 600; cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-download-word:hover { background: #1e40af; }
 
 .pw-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.55);
@@ -1478,6 +1504,40 @@ async function checkEditorPassword() {
 }
 function enterEditMode() { document.body.classList.add('edit-mode'); }
 function exitEditMode() { document.body.classList.remove('edit-mode'); editorSession = null; }
+async function downloadTitlesWord() {
+  var sections_meta = [
+    { id: 'macro',         label: 'Macro & Policy' },
+    { id: 'financial',     label: 'Financial Players' },
+    { id: 'international', label: 'International Impact' }
+  ];
+  var children = [];
+  var D = docx;
+  sections_meta.forEach(function(sec) {
+    var sectionEl = document.getElementById('section-' + sec.id);
+    if (!sectionEl) return;
+    var titles = Array.from(sectionEl.querySelectorAll('.card-title'))
+                     .map(function(el){ return el.textContent.trim(); })
+                     .filter(Boolean);
+    if (!titles.length) return;
+    children.push(new D.Paragraph({ text: sec.label, heading: D.HeadingLevel.HEADING_1 }));
+    titles.forEach(function(t){
+      children.push(new D.Paragraph({
+        children: [new D.TextRun({ text: '\u2022 ' + t, size: 22 })]
+      }));
+    });
+    children.push(new D.Paragraph({ text: '' }));
+  });
+  var doc = new D.Document({ sections: [{ children: children }] });
+  var blob = await D.Packer.toBlob(doc);
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  var d = new Date();
+  var ds = d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2);
+  a.download = 'Mexico_Newsletter_Titles_' + ds + '.docx';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 async function publishChanges() {
   if (PUBLISH_URL === 'NETLIFY_FUNCTION_URL_PLACEHOLDER') {
     alert('Publish endpoint not configured yet.');
@@ -1520,6 +1580,7 @@ async function publishChanges() {
 <!-- ══ EDIT MODE BAR ══ -->
 <div class="edit-mode-bar">
   <span class="edit-mode-label">&#9998; Editor</span>
+  <button class="btn-download-word" onclick="downloadTitlesWord()">&#8595; Word</button>
   <button class="btn-publish" onclick="publishChanges()">&#8679; Publish</button>
   <button class="btn-exit-edit" onclick="exitEditMode()">Exit</button>
 </div>
@@ -1698,6 +1759,58 @@ def generate_excel(source_results, excel_path):
 
 
 # ─────────────────────────────────────────
+# Email Source Report
+# ─────────────────────────────────────────
+
+def send_source_report():
+    """Email the source status Excel to all addresses in Email List.xlsx."""
+    import smtplib
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.base import MIMEBase
+    from email.mime.text import MIMEText
+    from email import encoders
+    from openpyxl import load_workbook
+
+    try:
+        # Read recipient list
+        wb = load_workbook(EMAIL_LIST_FILE)
+        ws = wb.active
+        recipients = [row[0].value for row in ws.iter_rows(min_row=1) if row[0].value]
+        if not recipients:
+            print("  Email skipped — no recipients found in Email List.xlsx")
+            return
+
+        today_str = datetime.now().strftime("%Y%m%d")
+        attachment_name = f"Source Report_{today_str}.xlsx"
+        subject = f"Mexico Newsletter \u2014 Source Report {today_str}"
+        body = "Please find attached the source status report for this week\u2019s newsletter run."
+
+        msg = MIMEMultipart()
+        msg["From"]    = OUTLOOK_SENDER
+        msg["To"]      = ", ".join(recipients)
+        msg["Subject"] = subject
+        msg.attach(MIMEText(body, "plain"))
+
+        with open(EXCEL_FILE, "rb") as f:
+            part = MIMEBase("application", "octet-stream")
+            part.set_payload(f.read())
+            encoders.encode_base64(part)
+            part.add_header("Content-Disposition", f'attachment; filename="{attachment_name}"')
+            msg.attach(part)
+
+        with smtplib.SMTP("smtp.office365.com", 587) as server:
+            server.starttls()
+            server.login(OUTLOOK_SENDER, OUTLOOK_PASSWORD)
+            server.sendmail(OUTLOOK_SENDER, recipients, msg.as_string())
+
+        print(f"  Email sent to: {', '.join(recipients)}")
+
+    except Exception as e:
+        print(f"  WARNING: Email failed — {e}")
+        print("  (Check OUTLOOK_SENDER / OUTLOOK_PASSWORD env vars, and that SMTP AUTH is enabled for your account)")
+
+
+# ─────────────────────────────────────────
 # Main
 # ─────────────────────────────────────────
 
@@ -1749,6 +1862,13 @@ def main():
     print(f"\n  Writing source status Excel...")
     generate_excel(source_results, EXCEL_FILE)
     print(f"  Excel saved to: {EXCEL_FILE}")
+
+    # ── Email source report ───────────────────────────────────────
+    if OUTLOOK_SENDER and OUTLOOK_PASSWORD:
+        print(f"\n  Sending source report email...")
+        send_source_report()
+    else:
+        print(f"\n  Email skipped — set OUTLOOK_SENDER and OUTLOOK_PASSWORD env vars to enable.")
 
     if total_raw == 0:
         print("\nNo articles fetched. Check your network or RSS URLs.")
