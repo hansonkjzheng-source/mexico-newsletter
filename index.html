@@ -1081,10 +1081,8 @@ function downloadTitlesWord() {
   var PB = 'font-family:Calibri,sans-serif;font-size:11pt;font-weight:bold;margin:14pt 0 2pt 0';
   var PS = 'font-family:Calibri,sans-serif;font-size:10pt;color:#374151;margin:0 0 8pt 0;line-height:1.5';
 
-  // Page 1: titles only
-  var page1 = '';
-  // Page 2: titles + summaries
-  var page2 = '';
+  var LINK = 'font-family:Calibri,sans-serif;font-size:10pt;color:#374151;margin:24pt 0 0 0';
+  var page1 = ''; var page2 = ''; var num = 1;
 
   sections_meta.forEach(function(sec) {
     var sectionEl = document.getElementById('section-' + sec.id);
@@ -1094,7 +1092,10 @@ function downloadTitlesWord() {
     if (!titles.length) return;
 
     page1 += '<h2 style="' + H2 + '">' + sec.label + '</h2>';
-    titles.forEach(function(t){ page1 += '<p style="' + P + '">\u2022 ' + t + '</p>'; });
+    titles.forEach(function(t){
+      page1 += '<p style="' + P + '">' + num + '. ' + t + '</p>';
+      num++;
+    });
 
     page2 += '<h2 style="' + H2 + '">' + sec.label + '</h2>';
     cards.forEach(function(card) {
@@ -1107,9 +1108,10 @@ function downloadTitlesWord() {
     });
   });
 
-  var body = page1
-    + '<div style="page-break-before:always"></div>'
-    + page2;
+  page1 += '<p style="' + LINK + '">Check past editions here: <a href="https://cooper.didichuxing.com/team-file/2199563718712/2203658047439">https://cooper.didichuxing.com/team-file/2199563718712/2203658047439</a></p>';
+
+  var spacer = '<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>';
+  var body = page1 + spacer + '<div style="page-break-before:always"></div>' + page2;
   var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>' + body + '</body></html>';
   var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
   var url = URL.createObjectURL(blob);
