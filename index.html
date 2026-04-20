@@ -1,22 +1,25 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mexico Weekly Newsletter — Apr 15, 2026</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mexico Weekly Newsletter &mdash; Apr 15, 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.js"></script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --body-bg: #eef1f6;
+  --body-bg: #f0f4f9;
   --card-bg: #ffffff;
   --text: #111827;
   --text-muted: #6b7280;
   --border: #e5e7eb;
-  --radius: 10px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-hover: 0 6px 18px rgba(0,0,0,0.11);
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radius: 14px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-hover: 0 4px 20px rgba(0,0,0,0.12);
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --mono: "JetBrains Mono", "Fira Code", "Courier New", monospace;
 }
 
@@ -26,6 +29,7 @@ body {
   color: var(--text);
   line-height: 1.6;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ══════════════════════════════════════════
@@ -33,7 +37,7 @@ body {
 ══════════════════════════════════════════ */
 .header {
   position: relative;
-  background: linear-gradient(158deg, #070e1c 0%, #0d1f3c 50%, #0a1628 100%);
+  background: linear-gradient(135deg, #060d1c 0%, #0c1d3a 60%, #0f2650 100%);
   color: #fff;
   overflow: hidden;
 }
@@ -44,6 +48,7 @@ body {
   background: linear-gradient(90deg, #006847 33.33%, #ffffff 33.33%, #ffffff 66.66%, #ce1126 66.66%);
   position: relative;
   z-index: 2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 /* Tech dot-grid pattern */
@@ -66,12 +71,13 @@ body {
 .stat-chip {
   font-family: var(--mono);
   font-size: 0.68rem;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
   color: rgba(255,255,255,0.65);
   padding: 3px 10px;
   border-radius: 4px;
   letter-spacing: 0.35px;
+  backdrop-filter: blur(4px);
 }
 .stat-chip strong {
   color: rgba(255,255,255,0.92);
@@ -94,8 +100,8 @@ body {
 .header-title {
   font-size: 2.2rem;
   font-weight: 800;
-  letter-spacing: -0.5px;
-  background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.80) 100%);
+  letter-spacing: -0.3px;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.82) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -121,21 +127,22 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 6px 14px;
+  padding: 8px 18px;
   border-radius: 99px;
   font-size: 0.77rem;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
-  background: rgba(255,255,255,0.07);
-  color: rgba(255,255,255,0.7);
-  border: 1px solid rgba(255,255,255,0.11);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.75);
+  border: 1px solid rgba(255,255,255,0.14);
   transition: background 0.18s, color 0.18s, border-color 0.18s;
   white-space: nowrap;
+  letter-spacing: 0.1px;
 }
 .cat-nav-pill:hover {
-  background: rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.16);
   color: #fff;
-  border-color: rgba(255,255,255,0.22);
+  border-color: rgba(255,255,255,0.28);
 }
 
 /* ══════════════════════════════════════════
@@ -156,25 +163,34 @@ body {
   align-items: center;
   gap: 10px;
   margin-bottom: 16px;
-  padding-bottom: 12px;
+  padding: 10px 14px 12px;
   border-bottom: 2px solid var(--cat-accent);
+  border-radius: 12px 12px 0 0;
+  background: color-mix(in srgb, var(--cat-accent) 6%, transparent);
 }
-.cat-icon { font-size: 1.25rem; }
-.cat-title {
+.cat-icon {
   font-size: 1.15rem;
+  background: color-mix(in srgb, var(--cat-accent) 14%, transparent);
+  border-radius: 8px;
+  padding: 4px 6px;
+  line-height: 1;
+}
+.cat-title {
+  font-size: 1.1rem;
   font-weight: 700;
   color: #1a1a2e;
   flex: 1;
+  letter-spacing: -0.1px;
 }
 .cat-badge {
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
   background: var(--cat-accent);
   color: #fff;
-  padding: 2px 9px;
+  padding: 3px 10px;
   border-radius: 99px;
-  min-width: 26px;
+  min-width: 28px;
   text-align: center;
 }
 
@@ -191,7 +207,7 @@ body {
 .card {
   background: var(--card-bg);
   border-radius: var(--radius);
-  border-left: 4px solid var(--card-accent, #2563eb);
+  border-left: 5px solid var(--card-accent, #2563eb);
   padding: 12px 16px 14px;
   box-shadow: var(--shadow);
   position: relative;
@@ -394,7 +410,7 @@ body.edit-mode .card:hover .card-toolbar { opacity: 1; pointer-events: auto; }
   left: 50%;
   transform: translate(-50%, -50%) scale(0.95);
   background: #fff;
-  border-radius: 14px;
+  border-radius: 16px;
   width: min(580px, 94vw);
   max-height: 88vh;
   overflow-y: auto;
@@ -617,6 +633,14 @@ body.edit-mode .edit-mode-bar { display: flex; }
   transition: color 0.15s, border-color 0.15s;
 }
 .btn-exit-edit:hover { color: #e2e8f0; border-color: rgba(255,255,255,0.3); }
+.btn-download-word {
+  background: #1d4ed8; color: #fff;
+  border: none;
+  padding: 5px 12px; border-radius: 99px;
+  font-size: 0.75rem; font-weight: 600; cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-download-word:hover { background: #1e40af; }
 
 /* Password modal */
 .pw-overlay {
@@ -672,7 +696,7 @@ body.edit-mode .edit-mode-bar { display: flex; }
 }
 </style>
 </head>
-<body class="">
+<body>
 
 <!-- ══ HEADER ══ -->
 <header class="header">
@@ -692,40 +716,40 @@ body.edit-mode .edit-mode-bar { display: flex; }
     <!-- Title -->
     <div class="header-center">
       <h1 class="header-title">Mexico Weekly Newsletter</h1>
-      <p class="header-sub">Apr 08 – Apr 15, 2026 &nbsp;•&nbsp; Macro • Finance • Fintech</p>
+      <p class="header-sub">Apr 08 &ndash; Apr 15, 2026 &nbsp;&bull;&nbsp; Macro &bull; Finance &bull; Fintech</p>
     </div>
 
     <!-- Category nav -->
-    <nav class="cat-nav"><a href="#section-macro" class="cat-nav-pill">🏛&nbsp;Macro &amp; Policy</a><a href="#section-financial" class="cat-nav-pill">💳&nbsp;Financial Players</a><a href="#section-international" class="cat-nav-pill">🌐&nbsp;International Impact</a></nav>
+    <nav class="cat-nav"><a href="#section-macro" class="cat-nav-pill">&#127963;&nbsp;Macro &amp; Policy</a><a href="#section-financial" class="cat-nav-pill">&#128179;&nbsp;Financial Players</a><a href="#section-international" class="cat-nav-pill">&#127760;&nbsp;International Impact</a></nav>
   </div>
 </header>
 
 <!-- ══ STORIES ══ -->
 <main class="container">
 <section class="cat-section" id="section-macro" data-category="macro" style="--cat-accent:#2563eb">
-<div class="cat-header"><span class="cat-icon">🏛</span><span class="cat-title">Macro &amp; Policy</span><span class="cat-badge" id="badge-macro">8</span></div>
-<div class="cards-list" id="cards-macro"><div class="card" id="story-0" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-0')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-0')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">Banxico Minutes: Three Members Open to Additional Rate Cut</h3></div><p class="card-summary">The minutes from Banxico's March 26 monetary policy meeting reveal that three of five board members are evaluating the pertinence and timing of an additional interest rate cut, while one member favored pausing adjustments through mid-2026. Banxico resumed its easing cycle in March with a 25 basis point cut, bringing the benchmark rate to 9.0%. Separately, Aldo Heffner Rodríguez was appointed as Banxico's new chief economist and Director General of Economic Research, effective April 10. The dual developments signal continued deliberation within the central bank on the pace of easing amid persistent inflation pressures and global uncertainty stemming from U.S. trade policy.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://www.bloomberglinea.com/latinoamerica/mexico/minuta-banxico-tres-miembros-valoran-pertinencia-y-momento-de-un-recorte-adicional-a-la-tasa/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a><a href="https://www.bloomberglinea.com/latinoamerica/mexico/aldo-heffner-rodriguez-es-nombrado-economista-en-jefe-de-banxico/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a></div></div>
-<div class="card" id="story-1" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-1')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-1')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">Cetes Real Returns Negative as Inflation Outpaces Yields</h3></div><p class="card-summary">Cetes yields continue their downward trend while Mexico's headline inflation has rebounded in April, effectively wiping out real returns for retail investors using the government's Cetesdirecto platform. This squeeze on fixed-income savers comes as Banxico progresses through its rate-cutting cycle, compressing nominal yields. The situation mirrors challenges seen across Latin America, where declining policy rates are eroding the appeal of traditional savings instruments. For Mexican retail investors, the negative real return on short-term government paper underscores the need to consider alternative instruments. The dynamic also adds complexity to Banxico's easing calculus, balancing growth support against persistent consumer price pressures.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://expansion.mx/economia/2026/04/14/inflacion-se-come-ganancias-cetes-abril" target="_blank" rel="noopener" class="source-link">Expansion</a></div></div>
-<div class="card" id="story-2" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-2')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-2')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">Budget Law Reform Raises Fiscal Risk Flags for Mexico</h3></div><p class="card-summary">A México Evalúa analysis warns that recent reforms to Mexico's budget law introduce significant fiscal risks. A key concern is a provision allowing government contracts to be initiated before definitive budget sufficiency is confirmed, potentially creating contingent liabilities and undermining fiscal discipline. The reform could reduce transparency and congressional oversight over public spending commitments. Analysts view this as a structural weakening of Mexico's budgetary framework at a time when public finances are already under pressure from Pemex support, social program spending, and slowing economic growth. Rating agencies and investors are likely to scrutinize these changes as part of their sovereign credit assessments.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://expansion.mx/economia/2026/04/13/reforma-ley-presupuesto-riesgos-finanzas-mexico" target="_blank" rel="noopener" class="source-link">Expansion</a></div></div>
-<div class="card" id="story-3" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-3')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-3')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">SAT Appoints New Head of Large Taxpayers Division</h3></div><p class="card-summary">Mexico's tax authority SAT named Jennifer Krystel Castillo Madrid as the new head of the Administración General de Grandes Contribuyentes (Large Taxpayers General Administration), replacing Armando Ramírez Sánchez, who will take on other roles within the institution. This division oversees tax compliance and audits for Mexico's largest corporate and individual taxpayers, making it one of the most strategically important units within SAT. The leadership change comes during the annual tax declaration season and amid SAT's ongoing push to improve collection efficiency. SAT also reported this week that it is processing individual tax refunds in as few as three days.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://expansion.mx/economia/2026/04/13/sat-nueva-titular-administracion-grandes-contribuyentes" target="_blank" rel="noopener" class="source-link">Expansion</a><a href="https://expansion.mx/finanzas-personales/2026/04/14/devolucion-de-impuestos-sat-cuantos-dias-tarda" target="_blank" rel="noopener" class="source-link">Expansion</a><a href="https://expansion.mx/finanzas-personales/2026/04/14/como-saber-si-mi-declaracion-anual-fue-rechazada-sat" target="_blank" rel="noopener" class="source-link">Expansion</a></div></div>
-<div class="card" id="story-4" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-4')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-4')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">Pemex Operational Incidents: Spills and Fire at Multiple Facilities</h3></div><p class="card-summary">Pemex faced a series of operational incidents this week. An oil residue spill was reported in Poza Rica, Veracruz, caused by the overflow of natural drainage systems during heavy rainfall. A diesel spill occurred at its Deer Park refinery in Texas, though Pemex denied any commercial impact, attributing responsibility to a subcontractor. Earlier, a coke warehouse fire broke out at the Dos Bocas (Olmeca) refinery in Tabasco. The cluster of incidents highlights persistent operational and safety challenges across Pemex's aging and new infrastructure. These events carry financial implications through potential environmental liabilities, insurance costs, and reputational risk with regulators and creditors.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://www.eluniversal.com.mx/nacion/nuevo-derrame-afecta-a-veracruz/" target="_blank" rel="noopener" class="source-link">El Universal</a><a href="https://www.bloomberglinea.com/latinoamerica/mexico/pemex-niega-dano-comercial-por-derrame-de-diesel-en-refineria-deer-park/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a><a href="https://www.bloomberglinea.com/latinoamerica/mexico/pemex-enfrenta-incendio-en-refineria-dos-bocas/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a></div></div>
-<div class="card" id="story-5" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-5')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-5')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">Pemex Studies Fracking Abroad as Mexico Reconsiders the Technique</h3></div><p class="card-summary">Pemex dispatched technical teams to oil fields in the U.S. Permian Basin, Canada, and South America to study horizontal hydraulic fracturing (fracking) operations. The visits reflect a broader reconsideration by the Mexican government of lifting its effective ban on fracking to boost domestic natural gas production and reduce industrial energy costs. Experts consulted by Bloomberg Línea note that while fracking would provide near-term industrial benefits—particularly for energy-intensive sectors—it is environmentally and financially unsustainable long-term. Mexico's gas deficit is a significant competitiveness constraint for manufacturing, and the policy debate has material implications for Pemex's capital expenditure plans and environmental commitments.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://www.bloomberglinea.com/latinoamerica/mexico/pemex-envia-equipos-tecnicos-a-eeuu-canada-y-sudamerica-para-analizar-el-fracking/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a><a href="https://www.bloomberglinea.com/latinoamerica/mexico/fracking-en-mexico-beneficiara-a-las-industrias-pero-es-insostenible-en-el-largo-plazo/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a></div></div>
-<div class="card" id="story-6" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-6')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-6')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">Private Oil Producers Contribute Only 9% of Mexico's Output</h3></div><p class="card-summary">Private companies account for just 9% of Mexico's total oil production, despite a modest growth trend in recent years. Participation has been constrained by the cancellation of new licensing rounds under the previous administration and ongoing restrictions on fresh investment commitments. With Pemex's production plateauing and its financial position remaining stressed, the limited private sector role represents a structural vulnerability for Mexico's hydrocarbon output and fiscal revenues. The data underscores the stakes involved in energy policy decisions—including the fracking debate—as the government seeks to stabilize production without fully opening the sector to private capital.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://expansion.mx/empresas/2026/04/14/privados-solo-aportan-9-de-la-produccion-petrolera-nacional" target="_blank" rel="noopener" class="source-link">Expansion</a></div></div>
-<div class="card" id="story-7" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-7')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-7')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">World Cup 2026 to Add ~13bps to Mexico's GDP: Moody's</h3></div><p class="card-summary">Moody's Analytics estimates that the FIFA World Cup 2026 will contribute approximately 13 basis points to Mexico's GDP growth, a more visible impact than in co-host nations the U.S. and Canada given Mexico's smaller economic base. The study notes this boost does not represent a trend change for the Mexican economy but is meaningful in the context of subdued growth expectations for 2026. Tourism, hospitality, infrastructure, and retail sectors are expected to be the primary beneficiaries. The event's economic relevance for Mexico is amplified by its concentration of matches and the country's existing football tourism infrastructure.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://www.bloomberglinea.com/linea-deportiva/que-impacto-economico-tendra-el-mundial-2026-en-mexico-eeuu-y-canada-esto-dice-moodys/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a></div></div>
-
+<div class="cat-header"><span class="cat-icon">&#127963;</span><span class="cat-title">Macro & Policy</span><span class="cat-badge" id="badge-macro">9</span></div>
+<div class="cards-list" id="cards-macro"><div class="card" id="story-0" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-0')" title="Edit">&#9998;</button><button class="btn-icon btn-delete" onclick="deleteCard('story-0')" title="Delete">&#215;</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">&#9658;</span><h3 class="card-title">Banxico Minutes: Three Members Open to Additional Rate Cut</h3></div><p class="card-summary">The minutes from Banxico's March 26 monetary policy meeting reveal that three of five board members are evaluating the pertinence and timing of an additional interest rate cut, while one member favored pausing adjustments through mid-2026. Banxico resumed its easing cycle in March with a 25 basis point cut, bringing the benchmark rate to 9.0%. Separately, Aldo Heffner Rodríguez was appointed as Banxico's new chief economist and Director General of Economic Research, effective April 10. The dual developments signal continued deliberation within the central bank on the pace of easing amid persistent inflation pressures and global uncertainty stemming from U.S. trade policy.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://www.bloomberglinea.com/latinoamerica/mexico/minuta-banxico-tres-miembros-valoran-pertinencia-y-momento-de-un-recorte-adicional-a-la-tasa/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a><a href="https://www.bloomberglinea.com/latinoamerica/mexico/aldo-heffner-rodriguez-es-nombrado-economista-en-jefe-de-banxico/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a></div></div>
+<div class="card" id="story-1" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-1')" title="Edit">&#9998;</button><button class="btn-icon btn-delete" onclick="deleteCard('story-1')" title="Delete">&#215;</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">&#9658;</span><h3 class="card-title">Cetes Real Returns Negative as Inflation Outpaces Yields</h3></div><p class="card-summary">Cetes yields continue their downward trend while Mexico's headline inflation has rebounded in April, effectively wiping out real returns for retail investors using the government's Cetesdirecto platform. This squeeze on fixed-income savers comes as Banxico progresses through its rate-cutting cycle, compressing nominal yields. The situation mirrors challenges seen across Latin America, where declining policy rates are eroding the appeal of traditional savings instruments. For Mexican retail investors, the negative real return on short-term government paper underscores the need to consider alternative instruments. The dynamic also adds complexity to Banxico's easing calculus, balancing growth support against persistent consumer price pressures.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://expansion.mx/economia/2026/04/14/inflacion-se-come-ganancias-cetes-abril" target="_blank" rel="noopener" class="source-link">Expansion</a></div></div>
+<div class="card" id="story-2" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-2')" title="Edit">&#9998;</button><button class="btn-icon btn-delete" onclick="deleteCard('story-2')" title="Delete">&#215;</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">&#9658;</span><h3 class="card-title">Budget Law Reform Raises Fiscal Risk Flags for Mexico</h3></div><p class="card-summary">A México Evalúa analysis warns that recent reforms to Mexico's budget law introduce significant fiscal risks. A key concern is a provision allowing government contracts to be initiated before definitive budget sufficiency is confirmed, potentially creating contingent liabilities and undermining fiscal discipline. The reform could reduce transparency and congressional oversight over public spending commitments. Analysts view this as a structural weakening of Mexico's budgetary framework at a time when public finances are already under pressure from Pemex support, social program spending, and slowing economic growth. Rating agencies and investors are likely to scrutinize these changes as part of their sovereign credit assessments.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://expansion.mx/economia/2026/04/13/reforma-ley-presupuesto-riesgos-finanzas-mexico" target="_blank" rel="noopener" class="source-link">Expansion</a></div></div>
+<div class="card" id="story-3" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-3')" title="Edit">&#9998;</button><button class="btn-icon btn-delete" onclick="deleteCard('story-3')" title="Delete">&#215;</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">&#9658;</span><h3 class="card-title">SAT Appoints New Head of Large Taxpayers Division</h3></div><p class="card-summary">Mexico's tax authority SAT named Jennifer Krystel Castillo Madrid as the new head of the Administración General de Grandes Contribuyentes (Large Taxpayers General Administration), replacing Armando Ramírez Sánchez, who will take on other roles within the institution. This division oversees tax compliance and audits for Mexico's largest corporate and individual taxpayers, making it one of the most strategically important units within SAT. The leadership change comes during the annual tax declaration season and amid SAT's ongoing push to improve collection efficiency. SAT also reported this week that it is processing individual tax refunds in as few as three days.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://expansion.mx/economia/2026/04/13/sat-nueva-titular-administracion-grandes-contribuyentes" target="_blank" rel="noopener" class="source-link">Expansion</a><a href="https://expansion.mx/finanzas-personales/2026/04/14/devolucion-de-impuestos-sat-cuantos-dias-tarda" target="_blank" rel="noopener" class="source-link">Expansion</a><a href="https://expansion.mx/finanzas-personales/2026/04/14/como-saber-si-mi-declaracion-anual-fue-rechazada-sat" target="_blank" rel="noopener" class="source-link">Expansion</a></div></div>
+<div class="card" id="story-4" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-4')" title="Edit">&#9998;</button><button class="btn-icon btn-delete" onclick="deleteCard('story-4')" title="Delete">&#215;</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">&#9658;</span><h3 class="card-title">Pemex Operational Incidents: Spills and Fire at Multiple Facilities</h3></div><p class="card-summary">Pemex faced a series of operational incidents this week. An oil residue spill was reported in Poza Rica, Veracruz, caused by the overflow of natural drainage systems during heavy rainfall. A diesel spill occurred at its Deer Park refinery in Texas, though Pemex denied any commercial impact, attributing responsibility to a subcontractor. Earlier, a coke warehouse fire broke out at the Dos Bocas (Olmeca) refinery in Tabasco. The cluster of incidents highlights persistent operational and safety challenges across Pemex's aging and new infrastructure. These events carry financial implications through potential environmental liabilities, insurance costs, and reputational risk with regulators and creditors.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://www.eluniversal.com.mx/nacion/nuevo-derrame-afecta-a-veracruz/" target="_blank" rel="noopener" class="source-link">El Universal</a><a href="https://www.bloomberglinea.com/latinoamerica/mexico/pemex-niega-dano-comercial-por-derrame-de-diesel-en-refineria-deer-park/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a><a href="https://www.bloomberglinea.com/latinoamerica/mexico/pemex-enfrenta-incendio-en-refineria-dos-bocas/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a></div></div>
+<div class="card" id="story-5" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-5')" title="Edit">&#9998;</button><button class="btn-icon btn-delete" onclick="deleteCard('story-5')" title="Delete">&#215;</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">&#9658;</span><h3 class="card-title">Pemex Studies Fracking Abroad as Mexico Reconsiders the Technique</h3></div><p class="card-summary">Pemex dispatched technical teams to oil fields in the U.S. Permian Basin, Canada, and South America to study horizontal hydraulic fracturing (fracking) operations. The visits reflect a broader reconsideration by the Mexican government of lifting its effective ban on fracking to boost domestic natural gas production and reduce industrial energy costs. Experts consulted by Bloomberg Línea note that while fracking would provide near-term industrial benefits—particularly for energy-intensive sectors—it is environmentally and financially unsustainable long-term. Mexico's gas deficit is a significant competitiveness constraint for manufacturing, and the policy debate has material implications for Pemex's capital expenditure plans and environmental commitments.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://www.bloomberglinea.com/latinoamerica/mexico/pemex-envia-equipos-tecnicos-a-eeuu-canada-y-sudamerica-para-analizar-el-fracking/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a><a href="https://www.bloomberglinea.com/latinoamerica/mexico/fracking-en-mexico-beneficiara-a-las-industrias-pero-es-insostenible-en-el-largo-plazo/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a></div></div>
+<div class="card" id="story-6" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-6')" title="Edit">&#9998;</button><button class="btn-icon btn-delete" onclick="deleteCard('story-6')" title="Delete">&#215;</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">&#9658;</span><h3 class="card-title">Private Oil Producers Contribute Only 9% of Mexico's Output</h3></div><p class="card-summary">Private companies account for just 9% of Mexico's total oil production, despite a modest growth trend in recent years. Participation has been constrained by the cancellation of new licensing rounds under the previous administration and ongoing restrictions on fresh investment commitments. With Pemex's production plateauing and its financial position remaining stressed, the limited private sector role represents a structural vulnerability for Mexico's hydrocarbon output and fiscal revenues. The data underscores the stakes involved in energy policy decisions—including the fracking debate—as the government seeks to stabilize production without fully opening the sector to private capital.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://expansion.mx/empresas/2026/04/14/privados-solo-aportan-9-de-la-produccion-petrolera-nacional" target="_blank" rel="noopener" class="source-link">Expansion</a></div></div>
+<div class="card" id="story-7" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-7')" title="Edit">&#9998;</button><button class="btn-icon btn-delete" onclick="deleteCard('story-7')" title="Delete">&#215;</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">&#9658;</span><h3 class="card-title">World Cup 2026 to Add ~13bps to Mexico's GDP: Moody's</h3></div><p class="card-summary">Moody's Analytics estimates that the FIFA World Cup 2026 will contribute approximately 13 basis points to Mexico's GDP growth, a more visible impact than in co-host nations the U.S. and Canada given Mexico's smaller economic base. The study notes this boost does not represent a trend change for the Mexican economy but is meaningful in the context of subdued growth expectations for 2026. Tourism, hospitality, infrastructure, and retail sectors are expected to be the primary beneficiaries. The event's economic relevance for Mexico is amplified by its concentration of matches and the country's existing football tourism infrastructure.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://www.bloomberglinea.com/linea-deportiva/que-impacto-economico-tendra-el-mundial-2026-en-mexico-eeuu-y-canada-esto-dice-moodys/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a></div></div>
+<div class="card" id="story-8" data-category="macro" style="--card-accent:#2563eb"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-8')" title="Edit">&#9998;</button><button class="btn-icon btn-delete" onclick="deleteCard('story-8')" title="Delete">&#215;</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">&#9658;</span><h3 class="card-title">AFAC Suspends Magnicharters' Air Operator Certificate on Financial Grounds</h3></div><p class="card-summary">Mexico's Civil Aviation Federal Agency (AFAC), under the SICT transport ministry, temporarily suspended Magnicharters' Air Operator Certificate following financial observations about the carrier. The suspension grounds the charter airline from commercial operations until compliance is demonstrated. While primarily an aviation regulatory action, the case has financial sector relevance as it highlights growing regulatory scrutiny of airline operators' financial health—an issue with downstream implications for lessors, lenders, and insurance providers exposed to Mexican aviation. Magnicharters operates charter and leisure routes, and the suspension could impact tourism-related travel during a peak holiday season.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://www.reforma.com/suspende-afac-certificado-para-operar-a-magnicharters/ar3186615" target="_blank" rel="noopener" class="source-link">Reforma</a></div></div>
 </div>
 <button class="btn-add" onclick="openAdd('macro')">+ Add Story</button>
 </section>
 <section class="cat-section" id="section-financial" data-category="financial" style="--cat-accent:#0891b2">
-<div class="cat-header"><span class="cat-icon">💳</span><span class="cat-title">Financial Players</span><span class="cat-badge" id="badge-financial">1</span></div>
-<div class="cards-list" id="cards-financial"><div class="card" id="story-1776681975406" data-category="financial" style="--card-accent: #0891b2;"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-1776681975406')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-1776681975406')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">test</h3></div><p class="card-summary">test</p><div class="card-sources"><span class="sources-label">Sources:</span></div></div></div>
-<button class="btn-add" onclick="openAdd('financial')">+ Add Story</button>
+<div class="cat-header"><span class="cat-icon">&#128179;</span><span class="cat-title">Financial Players</span><span class="cat-badge" id="badge-financial">0</span></div>
+<div class="cards-list" id="cards-financial"></div>
+<button class="btn-add" onclick="openAdd(&#39;financial&#39;)">+ Add Story</button>
 </section>
 <section class="cat-section" id="section-international" data-category="international" style="--cat-accent:#9333ea">
-<div class="cat-header"><span class="cat-icon">🌐</span><span class="cat-title">International Impact</span><span class="cat-badge" id="badge-international">2</span></div>
-<div class="cards-list" id="cards-international"><div class="card" id="story-9" data-category="international" style="--card-accent:#9333ea"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-9')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-9')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">Mexico-EU Trade Deal to Open 83% of Agro Products Tariff-Free</h3></div><p class="card-summary">The updated Mexico-European Union trade agreement will grant tariff-free access to 83% of Mexican agricultural products exported to Europe. Mexico's agro sector already generates over $55 billion USD in annual exports, and the EU deal is seen as a critical diversification lever as tensions with the U.S. persist under tariff pressures. The agreement is strategically significant given ongoing USMCA review uncertainty and Mexico's desire to reduce trade concentration with North America. European markets represent a growing outlet for Mexican avocados, tomatoes, berries, and other high-value products. Implementation timelines and phytosanitary compliance requirements will be key factors determining actual market penetration.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://expansion.mx/economia/2026/04/14/acuerdo-mexico-ue-abrira-libre-acceso-83-productos-agro" target="_blank" rel="noopener" class="source-link">Expansion</a></div></div>
-<div class="card" id="story-10" data-category="international" style="--card-accent:#9333ea"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-10')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-10')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">AmCham Mexico Launches Washington Mission Ahead of USMCA Review</h3></div><p class="card-summary">The American Chamber of Commerce of Mexico (AmCham) dispatched a high-level trade delegation to Washington D.C. from April 14–16 to participate in the North Capital Meridian Forum and meet with U.S. officials and business leaders. The mission aims to advance investment certainty ahead of the formal USMCA review process. With the treaty's review window approaching, AmCham is seeking to reinforce the business case for the agreement's continuity and address concerns around tariffs, nearshoring, and regulatory alignment. Mexico's export-dependent economy faces significant exposure to any adverse renegotiation outcomes, making private sector lobbying efforts in Washington increasingly critical.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://www.eluniversal.com.mx/cartera/amcham-mexico-inicia-mision-en-washington-rumbo-a-revision-del-t-mec-busca-certeza-para-inversiones/" target="_blank" rel="noopener" class="source-link">El Universal</a></div></div>
-
+<div class="cat-header"><span class="cat-icon">&#127760;</span><span class="cat-title">International Impact</span><span class="cat-badge" id="badge-international">3</span></div>
+<div class="cards-list" id="cards-international"><div class="card" id="story-9" data-category="international" style="--card-accent:#9333ea"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-9')" title="Edit">&#9998;</button><button class="btn-icon btn-delete" onclick="deleteCard('story-9')" title="Delete">&#215;</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">&#9658;</span><h3 class="card-title">Mexico-EU Trade Deal to Open 83% of Agro Products Tariff-Free</h3></div><p class="card-summary">The updated Mexico-European Union trade agreement will grant tariff-free access to 83% of Mexican agricultural products exported to Europe. Mexico's agro sector already generates over $55 billion USD in annual exports, and the EU deal is seen as a critical diversification lever as tensions with the U.S. persist under tariff pressures. The agreement is strategically significant given ongoing USMCA review uncertainty and Mexico's desire to reduce trade concentration with North America. European markets represent a growing outlet for Mexican avocados, tomatoes, berries, and other high-value products. Implementation timelines and phytosanitary compliance requirements will be key factors determining actual market penetration.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://expansion.mx/economia/2026/04/14/acuerdo-mexico-ue-abrira-libre-acceso-83-productos-agro" target="_blank" rel="noopener" class="source-link">Expansion</a></div></div>
+<div class="card" id="story-10" data-category="international" style="--card-accent:#9333ea"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-10')" title="Edit">&#9998;</button><button class="btn-icon btn-delete" onclick="deleteCard('story-10')" title="Delete">&#215;</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">&#9658;</span><h3 class="card-title">AmCham Mexico Launches Washington Mission Ahead of USMCA Review</h3></div><p class="card-summary">The American Chamber of Commerce of Mexico (AmCham) dispatched a high-level trade delegation to Washington D.C. from April 14–16 to participate in the North Capital Meridian Forum and meet with U.S. officials and business leaders. The mission aims to advance investment certainty ahead of the formal USMCA review process. With the treaty's review window approaching, AmCham is seeking to reinforce the business case for the agreement's continuity and address concerns around tariffs, nearshoring, and regulatory alignment. Mexico's export-dependent economy faces significant exposure to any adverse renegotiation outcomes, making private sector lobbying efforts in Washington increasingly critical.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://www.eluniversal.com.mx/cartera/amcham-mexico-inicia-mision-en-washington-rumbo-a-revision-del-t-mec-busca-certeza-para-inversiones/" target="_blank" rel="noopener" class="source-link">El Universal</a></div></div>
+<div class="card" id="story-11" data-category="international" style="--card-accent:#9333ea"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-11')" title="Edit">&#9998;</button><button class="btn-icon btn-delete" onclick="deleteCard('story-11')" title="Delete">&#215;</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">&#9658;</span><h3 class="card-title">Oil Prices Volatile Near $100 on Iran Talks, Geopolitical Risk</h3></div><p class="card-summary">Global oil markets experienced significant volatility this week, with Brent crude briefly surpassing $100 per barrel before closing below that threshold amid shifting geopolitical signals. Expectations of resumed U.S.-Iran nuclear negotiations pressured prices lower, while Strait of Hormuz closure risks had earlier driven the spike. The BMV (Mexican Stock Exchange) closed lower despite a Wall Street rebound, partly reflecting oil price weakness given Pemex's weight in market sentiment. For Mexico, oil price swings carry direct fiscal implications given Pemex's role in government revenues and the sensitivity of the federal budget to crude benchmarks.</p><div class="card-sources"><span class="sources-label">Sources:</span><a href="https://expansion.mx/mercados/2026/04/14/bolsa-mexicana-de-valores-cierra-a-la-baja-pese-a-repunte-en-wall-street" target="_blank" rel="noopener" class="source-link">Expansion</a><a href="https://www.bloomberglinea.com/mercados/petroleo-vuelve-a-superar-los-us100-ante-dudas-sobre-la-reapertura-del-estrecho-de-ormuz/" target="_blank" rel="noopener" class="source-link">Bloomberg Linea</a></div></div>
 </div>
 <button class="btn-add" onclick="openAdd('international')">+ Add Story</button>
 </section>
@@ -735,29 +759,29 @@ body.edit-mode .edit-mode-bar { display: flex; }
 
 <!-- ══ FOOTER ══ -->
 <footer class="footer">
-  Generated by Mexico News Aggregator &nbsp;•&nbsp; Powered by Claude (Anthropic) &nbsp;•&nbsp; 2026-04-15 08:44 UTC
+  Generated by Mexico News Aggregator &nbsp;&bull;&nbsp; Powered by Claude (Anthropic) &nbsp;&bull;&nbsp; 2026-04-15 08:44 UTC
 </footer>
 
 <!-- ══ MODAL ══ -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
   <div class="modal-head">
-    <span class="modal-heading" id="modal-heading">Add Story — 💳 Financial Players</span>
-    <button class="modal-close" onclick="closeModal()" title="Close">×</button>
+    <span class="modal-heading" id="modal-heading">Edit Story</span>
+    <button class="modal-close" onclick="closeModal()" title="Close">&#215;</button>
   </div>
   <div class="modal-body">
     <div class="form-group">
       <label class="form-label" for="modal-title-input">Headline</label>
-      <input id="modal-title-input" type="text" class="input-field" placeholder="Clear, concise headline (max 12 words)">
+      <input id="modal-title-input" type="text" class="input-field" placeholder="Clear, concise headline (max 12 words)"/>
     </div>
     <div class="form-group">
-      <label class="form-label" for="modal-summary">Summary (100–150 words)</label>
+      <label class="form-label" for="modal-summary">Summary (100&ndash;150 words)</label>
       <textarea id="modal-summary" class="input-field" placeholder="Write the 100-150 word summary here..."></textarea>
     </div>
     <div class="form-group">
       <div class="sources-header">Sources</div>
-      <div id="modal-sources"><div class="src-row"><input type="text" class="src-name input-field" placeholder="Source name" value=""><input type="url" class="src-url  input-field" placeholder="https://..." value=""><button type="button" class="btn-rm-src" onclick="this.closest('.src-row').remove()" title="Remove">×</button></div></div>
-      <button type="button" class="btn-add-src" onclick="addSourceRow('','')">+ Add source</button>
+      <div id="modal-sources"></div>
+      <button type="button" class="btn-add-src" onclick="addSourceRow('','')">&#43; Add source</button>
     </div>
   </div>
   <div class="modal-foot">
@@ -1048,6 +1072,40 @@ function exitEditMode() {
   document.body.classList.remove('edit-mode');
   editorSession = null;
 }
+async function downloadTitlesWord() {
+  var sections_meta = [
+    { id: 'macro',         label: 'Macro & Policy' },
+    { id: 'financial',     label: 'Financial Players' },
+    { id: 'international', label: 'International Impact' }
+  ];
+  var children = [];
+  var D = docx;
+  sections_meta.forEach(function(sec) {
+    var sectionEl = document.getElementById('section-' + sec.id);
+    if (!sectionEl) return;
+    var titles = Array.from(sectionEl.querySelectorAll('.card-title'))
+                     .map(function(el){ return el.textContent.trim(); })
+                     .filter(Boolean);
+    if (!titles.length) return;
+    children.push(new D.Paragraph({ text: sec.label, heading: D.HeadingLevel.HEADING_1 }));
+    titles.forEach(function(t){
+      children.push(new D.Paragraph({
+        children: [new D.TextRun({ text: '\u2022 ' + t, size: 22 })]
+      }));
+    });
+    children.push(new D.Paragraph({ text: '' }));
+  });
+  var doc = new D.Document({ sections: [{ children: children }] });
+  var blob = await D.Packer.toBlob(doc);
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  var d = new Date();
+  var ds = d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2);
+  a.download = 'Mexico_Newsletter_Titles_' + ds + '.docx';
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 async function publishChanges() {
   if (PUBLISH_URL === 'NETLIFY_FUNCTION_URL_PLACEHOLDER') {
@@ -1087,15 +1145,16 @@ async function publishChanges() {
 }
 </script>
 
-<button id="btn-toggle-all" class="btn-toggle-all" onclick="toggleAll()">▼ Expand All</button>
+<button id="btn-toggle-all" class="btn-toggle-all" onclick="toggleAll()">&#9660; Expand All</button>
 
 <!-- ══ EDITOR LOCK BUTTON ══ -->
-<button class="btn-editor-lock" onclick="openPwModal()" title="Editor login">🔒</button>
+<button class="btn-editor-lock" onclick="openPwModal()" title="Editor login">&#128274;</button>
 
 <!-- ══ EDIT MODE BAR ══ -->
 <div class="edit-mode-bar">
-  <span class="edit-mode-label">✎ Editor</span>
-  <button class="btn-publish" onclick="publishChanges()">⇧ Publish</button>
+  <span class="edit-mode-label">&#9998; Editor</span>
+  <button class="btn-download-word" onclick="downloadTitlesWord()">&#8595; Word</button>
+  <button class="btn-publish" onclick="publishChanges()">&#8679; Publish</button>
   <button class="btn-exit-edit" onclick="exitEditMode()">Exit</button>
 </div>
 
@@ -1103,14 +1162,15 @@ async function publishChanges() {
 <div class="pw-overlay" id="pw-overlay" onclick="closePwModal()"></div>
 <div class="pw-modal" id="pw-modal">
   <div class="pw-modal-head">
-    <span>🔒&nbsp; Editor Login</span>
-    <button class="modal-close" onclick="closePwModal()">×</button>
+    <span>&#128274;&nbsp; Editor Login</span>
+    <button class="modal-close" onclick="closePwModal()">&#215;</button>
   </div>
   <div class="pw-modal-body">
     <div class="form-group">
       <label class="form-label" for="pw-input">Password</label>
-      <input id="pw-input" type="password" class="input-field" placeholder="Enter editor password" onkeydown="if(event.key==='Enter') checkEditorPassword()">
-      <p class="pw-error" id="pw-error" style="display: none;">Incorrect password — please try again.</p>
+      <input id="pw-input" type="password" class="input-field" placeholder="Enter editor password"
+             onkeydown="if(event.key==='Enter') checkEditorPassword()"/>
+      <p class="pw-error" id="pw-error">Incorrect password — please try again.</p>
     </div>
   </div>
   <div class="modal-foot">
@@ -1118,5 +1178,5 @@ async function publishChanges() {
     <button class="btn-save" onclick="checkEditorPassword()">Unlock</button>
   </div>
 </div>
-
-</body></html>
+</body>
+</html>
