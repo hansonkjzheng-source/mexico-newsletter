@@ -717,8 +717,8 @@ body.edit-mode .edit-mode-bar { display: flex; }
 <button class="btn-add" onclick="openAdd('macro')">+ Add Story</button>
 </section>
 <section class="cat-section" id="section-financial" data-category="financial" style="--cat-accent:#0891b2">
-<div class="cat-header"><span class="cat-icon">💳</span><span class="cat-title">Financial Players</span><span class="cat-badge" id="badge-financial">0</span></div>
-<div class="cards-list" id="cards-financial"></div>
+<div class="cat-header"><span class="cat-icon">💳</span><span class="cat-title">Financial Players</span><span class="cat-badge" id="badge-financial">1</span></div>
+<div class="cards-list" id="cards-financial"><div class="card" id="story-1776681975406" data-category="financial" style="--card-accent: #0891b2;"><div class="card-toolbar"><span class="drag-handle" title="Drag to reorder">⋮⋮</span><div class="card-btns"><button class="btn-icon btn-edit" onclick="openEdit('story-1776681975406')" title="Edit">✎</button><button class="btn-icon btn-delete" onclick="deleteCard('story-1776681975406')" title="Delete">×</button></div></div><div class="card-header-row" onclick="toggleCard(event)"><span class="card-toggle-icon">►</span><h3 class="card-title">test</h3></div><p class="card-summary">test</p><div class="card-sources"><span class="sources-label">Sources:</span></div></div></div>
 <button class="btn-add" onclick="openAdd('financial')">+ Add Story</button>
 </section>
 <section class="cat-section" id="section-international" data-category="international" style="--cat-accent:#9333ea">
@@ -742,7 +742,7 @@ body.edit-mode .edit-mode-bar { display: flex; }
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
   <div class="modal-head">
-    <span class="modal-heading" id="modal-heading">Edit Story</span>
+    <span class="modal-heading" id="modal-heading">Add Story — 💳 Financial Players</span>
     <button class="modal-close" onclick="closeModal()" title="Close">×</button>
   </div>
   <div class="modal-body">
@@ -756,7 +756,7 @@ body.edit-mode .edit-mode-bar { display: flex; }
     </div>
     <div class="form-group">
       <div class="sources-header">Sources</div>
-      <div id="modal-sources"><div class="src-row"><input type="text" class="src-name input-field" placeholder="Source name" value="Bloomberg Linea"><input type="url" class="src-url  input-field" placeholder="https://..." value="https://www.bloomberglinea.com/latinoamerica/mexico/minuta-banxico-tres-miembros-valoran-pertinencia-y-momento-de-un-recorte-adicional-a-la-tasa/"><button type="button" class="btn-rm-src" onclick="this.closest('.src-row').remove()" title="Remove">×</button></div><div class="src-row"><input type="text" class="src-name input-field" placeholder="Source name" value="Bloomberg Linea"><input type="url" class="src-url  input-field" placeholder="https://..." value="https://www.bloomberglinea.com/latinoamerica/mexico/aldo-heffner-rodriguez-es-nombrado-economista-en-jefe-de-banxico/"><button type="button" class="btn-rm-src" onclick="this.closest('.src-row').remove()" title="Remove">×</button></div></div>
+      <div id="modal-sources"><div class="src-row"><input type="text" class="src-name input-field" placeholder="Source name" value=""><input type="url" class="src-url  input-field" placeholder="https://..." value=""><button type="button" class="btn-rm-src" onclick="this.closest('.src-row').remove()" title="Remove">×</button></div></div>
       <button type="button" class="btn-add-src" onclick="addSourceRow('','')">+ Add source</button>
     </div>
   </div>
