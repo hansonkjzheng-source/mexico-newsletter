@@ -1476,8 +1476,9 @@ document.addEventListener('keydown', function(e) {
 document.getElementById('modal').addEventListener('click', function(e) {
   e.stopPropagation();
 });
-document.getElementById('pw-modal').addEventListener('click', function(e) {
-  e.stopPropagation();
+document.addEventListener('DOMContentLoaded', function() {
+  var pwm = document.getElementById('pw-modal');
+  if (pwm) pwm.addEventListener('click', function(e) { e.stopPropagation(); });
 });
 
 /* ── Editor password gate ── */
