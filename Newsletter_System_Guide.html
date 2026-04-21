@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Auto Weekly Newsletter — 系统说明与搭建指引</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f0f4f9;
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --text: #111827;
+  --muted: #6b7280;
+  --blue: #2563eb;
+  --blue-light: #eff6ff;
+  --green: #065f46;
+  --green-light: #ecfdf5;
+  --orange: #92400e;
+  --orange-light: #fffbeb;
+  --purple: #5b21b6;
+  --purple-light: #f5f3ff;
+  --red: #991b1b;
+  --red-light: #fef2f2;
+  --font: 'Inter', -apple-system, sans-serif;
+}
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.65; }
+
+/* ── Header ── */
+.page-header {
+  background: linear-gradient(135deg, #060d1c 0%, #0c1d3a 60%, #0f2650 100%);
+  color: #fff; padding: 48px 40px 52px;
+  position: relative; overflow: hidden;
+}
+.page-header::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.flag-strip {
+  height: 8px;
+  background: linear-gradient(90deg, #006847 33.33%, #fff 33.33%, #fff 66.66%, #ce1126 66.66%);
+  position: absolute; top: 0; left: 0; right: 0;
+}
+.header-content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+.header-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 14px; }
+.header-title { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; line-height: 1.2; }
+.header-sub { font-size: 0.95rem; color: rgba(255,255,255,0.55); max-width: 600px; }
+
+/* ── Layout ── */
+.container { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ── TOC ── */
+.toc {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 24px 28px; margin-bottom: 44px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.toc-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; }
+.toc ol { padding-left: 20px; }
+.toc li { margin: 5px 0; }
+.toc a { color: var(--blue); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+.toc a:hover { text-decoration: underline; }
+
+/* ── Section headings ── */
+.section { margin-bottom: 52px; }
+.section-label {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 8px;
+}
+h2 { font-size: 1.55rem; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 16px; color: #0f172a; }
+h3 { font-size: 1.1rem; font-weight: 700; margin: 28px 0 10px; color: #1e293b; }
+p { margin-bottom: 14px; font-size: 0.92rem; color: #374151; }
+
+/* ── Cards ── */
+.card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 22px 26px; margin-bottom: 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04);
+}
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-bottom: 28px; }
+.service-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.service-card .icon { font-size: 1.6rem; margin-bottom: 10px; }
+.service-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+.service-card p { font-size: 0.82rem; color: var(--muted); margin: 0; line-height: 1.55; }
+.service-card.blue  { border-left: 4px solid #2563eb; }
+.service-card.green { border-left: 4px solid #16a34a; }
+.service-card.orange{ border-left: 4px solid #f59e0b; }
+.service-card.purple{ border-left: 4px solid #7c3aed; }
+.service-card.teal  { border-left: 4px solid #0891b2; }
+
+/* ── Step list ── */
+.steps { counter-reset: step; }
+.step {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 22px 24px 22px 70px; margin-bottom: 14px; position: relative;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.step::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute; left: 20px; top: 20px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: #0f2650; color: #fff;
+  font-size: 0.88rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.step h4 { font-size: 0.98rem; font-weight: 700; margin-bottom: 8px; color: #0f172a; }
+.step p { font-size: 0.86rem; color: #374151; margin-bottom: 6px; }
+.step p:last-child { margin-bottom: 0; }
+
+/* ── Code blocks ── */
+pre {
+  background: #0f172a; color: #e2e8f0; border-radius: 10px;
+  padding: 16px 18px; font-size: 0.8rem; line-height: 1.65;
+  overflow-x: auto; margin: 12px 0 16px; font-family: "JetBrains Mono","Fira Code","Courier New",monospace;
+}
+code { font-family: "JetBrains Mono","Fira Code","Courier New",monospace; font-size: 0.82em; }
+p code, li code { background: #f1f5f9; color: #1e293b; padding: 2px 6px; border-radius: 5px; }
+
+/* ── Info boxes ── */
+.info-box {
+  border-radius: 10px; padding: 14px 18px; margin: 14px 0; font-size: 0.86rem;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.info-box .icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.info-box.blue   { background: var(--blue-light);   border-left: 4px solid var(--blue);   color: #1e3a8a; }
+.info-box.green  { background: var(--green-light);  border-left: 4px solid #16a34a;       color: #14532d; }
+.info-box.orange { background: var(--orange-light); border-left: 4px solid #f59e0b;       color: var(--orange); }
+
+/* ── Mermaid diagrams ── */
+.diagram-wrap {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 28px 20px; margin: 20px 0 28px;
+  display: flex; justify-content: center; overflow-x: auto;
+}
+.mermaid { min-width: 400px; max-width: 100%; }
+
+/* ── Tables ── */
+table { width: 100%; border-collapse: collapse; margin: 14px 0 24px; font-size: 0.86rem; }
+th { background: #f8fafc; font-weight: 700; padding: 10px 14px; text-align: left; border: 1px solid var(--border); color: #374151; }
+td { padding: 9px 14px; border: 1px solid var(--border); vertical-align: top; }
+tr:nth-child(even) td { background: #fafafa; }
+
+/* ── Badge ── */
+.badge { display: inline-block; padding: 2px 9px; border-radius: 99px; font-size: 0.72rem; font-weight: 700; }
+.badge.blue   { background: #dbeafe; color: #1d4ed8; }
+.badge.green  { background: #d1fae5; color: #065f46; }
+.badge.orange { background: #fef3c7; color: #92400e; }
+.badge.free   { background: #d1fae5; color: #065f46; }
+.badge.paid   { background: #fef3c7; color: #92400e; }
+
+ul, ol { padding-left: 22px; margin-bottom: 14px; }
+li { margin: 5px 0; font-size: 0.9rem; color: #374151; }
+hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="flag-strip"></div>
+  <div class="header-content">
+    <div class="header-tag">技术文档 · Technical Reference</div>
+    <div class="header-title">Auto Weekly Newsletter 系统</div>
+    <div class="header-sub">实现原理 · 架构说明 · 搭建指引 — 基于 GitHub Pages + Cloudflare Workers + Claude AI</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">目录 Contents</div>
+    <ol>
+      <li><a href="#overview">系统概述</a></li>
+      <li><a href="#architecture">架构与服务角色</a></li>
+      <li><a href="#flow">信息流转图</a></li>
+      <li><a href="#components">各组件详解</a></li>
+      <li><a href="#setup">搭建指引（Step by Step）</a></li>
+      <li><a href="#skill">使用 Claude Code Skill 快速复现</a></li>
+      <li><a href="#troubleshoot">常见问题排查</a></li>
+    </ol>
+  </div>
+
+  <!-- ══ 1. 系统概述 ══ -->
+  <div class="section" id="overview">
+    <div class="section-label">Part 1</div>
+    <h2>系统概述</h2>
+    <p>本系统实现了一套<strong>全自动化的每周新闻简报生成与发布流程</strong>。每次运行 Python 脚本，系统将自动完成以下全部工作：</p>
+    <div class="card-grid">
+      <div class="service-card blue">
+        <div class="icon">📰</div>
+        <h4>自动抓取新闻</h4>
+        <p>从多个 RSS 来源批量获取过去一周的文章，支持 30+ 信息源同时抓取。</p>
+      </div>
+      <div class="service-card purple">
+        <div class="icon">🤖</div>
+        <h4>AI 筛选与摘要</h4>
+        <p>调用 Claude API 对文章进行相关性过滤、去重分组、摘要生成，仅保留高价值内容。</p>
+      </div>
+      <div class="service-card orange">
+        <div class="icon">🌐</div>
+        <h4>自动生成网站</h4>
+        <p>生成精美 HTML 简报页面并自动推送到 GitHub Pages，一键发布为公开网站。</p>
+      </div>
+      <div class="service-card green">
+        <div class="icon">✏️</div>
+        <h4>在线编辑与发布</h4>
+        <p>通过密码解锁浏览器编辑器，可对内容进行调整后一键发布，无需本地操作。</p>
+      </div>
+      <div class="service-card teal">
+        <div class="icon">📊</div>
+        <h4>来源状态追踪</h4>
+        <p>生成 Excel 报告记录各 RSS 源的抓取状态，可直接从网站下载查看。</p>
+      </div>
+    </div>
+
+    <div class="info-box blue">
+      <span class="icon">💡</span>
+      <span>整个系统的<strong>所有云服务均为免费层</strong>：GitHub 免费账户 + Cloudflare Workers 免费层（100k 请求/天）。唯一有成本的是 Claude API 调用（每次运行约消耗几千 tokens）。</span>
+    </div>
+  </div>
+
+  <!-- ══ 2. 架构与服务角色 ══ -->
+  <div class="section" id="architecture">
+    <div class="section-label">Part 2</div>
+    <h2>架构与服务角色</h2>
+    <p>系统共涉及 <strong>5 个服务/组件</strong>，各自职责清晰：</p>
+
+    <table>
+      <tr>
+        <th>服务 / 组件</th>
+        <th>类型</th>
+        <th>费用</th>
+        <th>职责</th>
+      </tr>
+      <tr>
+        <td><strong>本地 Python 脚本</strong></td>
+        <td>本地执行</td>
+        <td><span class="badge free">免费</span></td>
+        <td>核心逻辑：抓取 RSS → Claude 处理 → 生成 HTML + Excel → git push</td>
+      </tr>
+      <tr>
+        <td><strong>Claude API</strong></td>
+        <td>AI 服务</td>
+        <td><span class="badge paid">按量计费</span></td>
+        <td>相关性过滤、文章分组、标题重写、内容摘要</td>
+      </tr>
+      <tr>
+        <td><strong>GitHub Repository</strong></td>
+        <td>代码/文件存储</td>
+        <td><span class="badge free">免费</span></td>
+        <td>存储 index.html 和 source_status.xlsx，是内容的"唯一真实来源"</td>
+      </tr>
+      <tr>
+        <td><strong>GitHub Pages</strong></td>
+        <td>静态网站托管</td>
+        <td><span class="badge free">免费</span></td>
+        <td>将 GitHub repo 中的 index.html 自动发布为公开网站</td>
+      </tr>
+      <tr>
+        <td><strong>Cloudflare Worker</strong></td>
+        <td>Serverless 函数</td>
+        <td><span class="badge free">免费</span></td>
+        <td>浏览器编辑后的"保存"接口：验证密码 → 调用 GitHub API 更新 index.html</td>
+      </tr>
+    </table>
+
+    <div class="info-box orange">
+      <span class="icon">⚠️</span>
+      <span><strong>Cloudflare Worker 的作用仅限于"浏览器端编辑后发布"</strong>这一个场景。Python 脚本直接用 git 推送，不经过 Cloudflare。</span>
+    </div>
+  </div>
+
+  <!-- ══ 3. 信息流转图 ══ -->
+  <div class="section" id="flow">
+    <div class="section-label">Part 3</div>
+    <h2>信息流转图</h2>
+
+    <h3>① Python 脚本运行流程（每周执行一次）</h3>
+    <div class="diagram-wrap">
+      <div class="mermaid">
+flowchart TD
+    A([▶ 运行 Python 脚本]) --> B[抓取所有 RSS 源\n收集过去 7 天文章]
+    B --> C{调用 Claude API\n相关性过滤}
+    C -->|保留相关文章| D[调用 Claude API\n分组 + 摘要 + 标题]
+    C -->|丢弃不相关| X([忽略])
+    D --> E[生成 index.html\n生成 source_status.xlsx]
+    E --> F[git add + commit + push\n推送至 GitHub]
+    F --> G[GitHub Pages\n自动重新部署]
+    G --> H([🌐 网站更新完成\n约 1 分钟后生效])
+
+    style A fill:#0f2650,color:#fff
+    style H fill:#065f46,color:#fff
+    style X fill:#6b7280,color:#fff
+      </div>
+    </div>
+
+    <h3>② 浏览器编辑 + 发布流程（按需使用）</h3>
+    <div class="diagram-wrap">
+      <div class="mermaid">
+flowchart LR
+    A([编辑者打开网站]) --> B[点击 🔒 锁图标]
+    B --> C[输入密码]
+    C --> D{浏览器 SHA-256\n比对 EDITOR_HASH}
+    D -->|匹配| E[进入编辑模式\n可拖拽/修改/删除卡片]
+    D -->|不匹配| F([❌ 密码错误])
+    E --> G[点击 ⬆ Publish]
+    G --> H[POST 请求\n→ Cloudflare Worker]
+    H --> I{验证密码\nSAVE_PASSWORD_HASH}
+    I -->|通过| J[调用 GitHub API\n更新 index.html]
+    I -->|拒绝| K([❌ 401 Unauthorized])
+    J --> L[GitHub Pages\n重新部署]
+    L --> M([✅ 网站更新])
+
+    style A fill:#0f2650,color:#fff
+    style M fill:#065f46,color:#fff
+    style F fill:#991b1b,color:#fff
+    style K fill:#991b1b,color:#fff
+      </div>
+    </div>
+
+    <h3>③ 密码安全机制</h3>
+    <div class="diagram-wrap">
+      <div class="mermaid">
+flowchart LR
+    P["明文密码\n(仅用户知道)"]
+    P -->|"echo -n pwd | sha256sum"| H["SHA-256 Hash\n(存储在两处)"]
+    H --> H1["index.html\nEDITOR_HASH\n(前端验证用)"]
+    H --> H2["Cloudflare Worker\nSAVE_PASSWORD_HASH\n(服务端验证用)"]
+
+    style P fill:#5b21b6,color:#fff
+    style H fill:#1e40af,color:#fff
+      </div>
+    </div>
+    <p>明文密码<strong>从不存储在任何地方</strong>。两个 hash 来自同一密码，分别用于前端解锁（index.html）和后端验证发布请求（Cloudflare Worker）。</p>
+  </div>
+
+  <!-- ══ 4. 各组件详解 ══ -->
+  <div class="section" id="components">
+    <div class="section-label">Part 4</div>
+    <h2>各组件详解</h2>
+
+    <h3>Python 脚本关键模块</h3>
+    <table>
+      <tr><th>模块/函数</th><th>作用</th></tr>
+      <tr><td><code>fetch_rss()</code></td><td>用 feedparser 解析 RSS，过滤过去 7 天文章</td></tr>
+      <tr><td><code>filter_relevant()</code></td><td>批量调用 Claude：判断每篇文章与主题的相关性（批次处理，节省 tokens）</td></tr>
+      <tr><td><code>group_and_summarize()</code></td><td>调用 Claude：对相关文章去重分组，生成每组的标题和摘要</td></tr>
+      <tr><td><code>generate_html()</code></td><td>将分组结果渲染为完整 HTML 页面（含编辑功能）</td></tr>
+      <tr><td><code>generate_excel()</code></td><td>生成 source_status.xlsx：每个 RSS 源的抓取成功/失败状态</td></tr>
+      <tr><td><code>main() 末尾</code></td><td>shutil.copy + subprocess git push，全自动发布</td></tr>
+    </table>
+
+    <h3>HTML 页面内嵌功能</h3>
+    <table>
+      <tr><th>功能</th><th>技术实现</th></tr>
+      <tr><td>密码解锁编辑器</td><td>浏览器原生 <code>crypto.subtle.digest('SHA-256')</code>，无后端依赖</td></tr>
+      <tr><td>卡片拖拽排序</td><td>SortableJS CDN</td></tr>
+      <tr><td>Word 文档下载</td><td>原生 Blob(<code>application/msword</code>)，无 CDN 依赖</td></tr>
+      <tr><td>Source Report 下载</td><td><code>&lt;a href="source_status.xlsx" download&gt;</code></td></tr>
+      <tr><td>发布到 GitHub</td><td>fetch POST → Cloudflare Worker → GitHub API</td></tr>
+    </table>
+
+    <h3>Cloudflare Worker 接口规范</h3>
+    <pre>POST https://your-worker.workers.dev
+Content-Type: application/json
+
+{
+  "password": "明文密码（Worker 内部计算 hash 验证）",
+  "html":     "完整 HTML 字符串"
+}
+
+Response 200: { "ok": true }
+Response 401: Unauthorized（密码错误）
+Response 500: GitHub API 调用失败</pre>
+  </div>
+
+  <!-- ══ 5. 搭建指引 ══ -->
+  <div class="section" id="setup">
+    <div class="section-label">Part 5</div>
+    <h2>搭建指引（Step by Step）</h2>
+
+    <div class="info-box green">
+      <span class="icon">✅</span>
+      <span>本指引配合 Claude Code Skill <code>/setup-newsletter</code> 使用效果最佳——让 AI 引导你完成每一步的代码生成和配置。</span>
+    </div>
+
+    <div class="steps">
+
+      <div class="step">
+        <h4>准备工作：确认所需账号和工具</h4>
+        <p>✅ GitHub 账号（免费）</p>
+        <p>✅ Cloudflare 账号（免费）— <a href="https://cloudflare.com">cloudflare.com</a> 注册</p>
+        <p>✅ Anthropic API Key — 或公司内部代理 URL + Key</p>
+        <p>✅ Python 3.8+ 已安装，pip 可用</p>
+        <p>✅ Git 已安装，已配置用户名/邮箱</p>
+      </div>
+
+      <div class="step">
+        <h4>创建 GitHub 仓库 + 开启 GitHub Pages</h4>
+        <p>① github.com → 右上角 + → New repository</p>
+        <p>② 仓库名自定义（如 <code>brazil-newsletter</code>），设为 <strong>Public</strong>，不要初始化 README</p>
+        <p>③ 创建完成后：Settings → Pages → Source: <strong>Deploy from a branch</strong> → Branch: <strong>main</strong> → 文件夹: <strong>/ (root)</strong> → Save</p>
+        <p>④ 创建 Personal Access Token：Settings → Developer settings → Tokens (classic) → Generate new token → 勾选 <strong>repo</strong> 权限 → 复制 token（只显示一次！）</p>
+      </div>
+
+      <div class="step">
+        <h4>在本地克隆仓库</h4>
+        <pre>git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+cd YOUR_REPO</pre>
+        <p>如果 git push 报网络错误，需配置系统代理（Windows 系统找到代理端口后）：</p>
+        <pre>git config --global http.proxy http://localhost:PORT
+git config --global https.proxy http://localhost:PORT</pre>
+      </div>
+
+      <div class="step">
+        <h4>计算密码 Hash</h4>
+        <p>决定你的编辑器密码，然后在 Git Bash 中计算其 SHA-256：</p>
+        <pre>echo -n "YOUR_PASSWORD" | sha256sum</pre>
+        <p>记录输出的 64 位 hash，后续两处会用到：HTML 中的 <code>EDITOR_HASH</code> 和 Cloudflare 的 <code>SAVE_PASSWORD_HASH</code>。</p>
+        <div class="info-box orange">
+          <span class="icon">⚠️</span>
+          <span>两处 hash 必须相同（来自同一密码）否则浏览器能解锁但无法发布。</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <h4>创建 Cloudflare Worker</h4>
+        <p>① 登录 <a href="https://cloudflare.com">cloudflare.com</a> → Workers &amp; Pages → Create → Create Worker</p>
+        <p>② 命名（如 <code>newsletter-save</code>）→ Deploy</p>
+        <p>③ Edit code → 删除全部内容 → 粘贴以下代码：</p>
+        <pre>const CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS'
+};
+
+export default {
+  async fetch(request, env) {
+    if (request.method === 'OPTIONS')
+      return new Response(null, { status: 204, headers: CORS });
+    if (request.method !== 'POST')
+      return new Response('Method Not Allowed', { status: 405, headers: CORS });
+
+    let body;
+    try { body = await request.json(); }
+    catch (e) { return new Response('Invalid JSON', { status: 400, headers: CORS }); }
+
+    const { password, html } = body;
+    if (!password || !html)
+      return new Response('Missing fields', { status: 400, headers: CORS });
+
+    const hash = Array.from(new Uint8Array(
+      await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password))
+    )).map(b => b.toString(16).padStart(2,'0')).join('');
+
+    if (hash !== env.SAVE_PASSWORD_HASH)
+      return new Response('Unauthorized', { status: 401, headers: CORS });
+
+    const base = `https://api.github.com/repos/${env.GITHUB_OWNER}/${env.GITHUB_REPO}/contents/index.html`;
+    const headers = { 'Authorization': `token ${env.GITHUB_TOKEN}`, 'User-Agent': 'cf-worker' };
+
+    const shaRes = await fetch(base, { headers });
+    if (!shaRes.ok) return new Response('SHA fetch failed', { status: 500, headers: CORS });
+    const sha = (await shaRes.json()).sha;
+
+    const bytes = new TextEncoder().encode(html);
+    let bin = ''; bytes.forEach(b => bin += String.fromCharCode(b));
+
+    const upRes = await fetch(base, {
+      method: 'PUT', headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Newsletter updated via editor', content: btoa(bin), sha })
+    });
+
+    if (!upRes.ok) return new Response('GitHub error: ' + await upRes.text(), { status: 500, headers: CORS });
+    return new Response(JSON.stringify({ ok: true }), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
+  }
+};</pre>
+        <p>④ Deploy → 记录 Worker URL（格式：<code>https://newsletter-save.YOUR_SUBDOMAIN.workers.dev</code>）</p>
+        <p>⑤ Settings → Variables → 添加以下 4 个环境变量：</p>
+        <table>
+          <tr><th>变量名</th><th>值</th></tr>
+          <tr><td><code>GITHUB_OWNER</code></td><td>你的 GitHub 用户名</td></tr>
+          <tr><td><code>GITHUB_REPO</code></td><td>仓库名</td></tr>
+          <tr><td><code>GITHUB_TOKEN</code></td><td>Step 2 生成的 Personal Access Token</td></tr>
+          <tr><td><code>SAVE_PASSWORD_HASH</code></td><td>Step 4 计算的 SHA-256 hash</td></tr>
+        </table>
+      </div>
+
+      <div class="step">
+        <h4>生成定制 Python 脚本（使用 Claude Code Skill）</h4>
+        <p>在项目目录打开 Claude Code，运行：</p>
+        <pre>/setup-newsletter</pre>
+        <p>按提示提供以下信息，Claude 将自动生成定制脚本：</p>
+        <ul>
+          <li>简报主题与地区（如"墨西哥金融科技与宏观经济"）</li>
+          <li>你的 RSS 源 URL 列表 + 名称 + 分类</li>
+          <li>GitHub 用户名、仓库名</li>
+          <li>编辑器密码和 hash</li>
+          <li>Cloudflare Worker URL</li>
+          <li>Anthropic API Key（和 base URL，如有公司代理）</li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <h4>配置环境变量（永久生效）</h4>
+        <p>在 Git Bash 中编辑 <code>~/.bashrc</code>：</p>
+        <pre>export ANTHROPIC_API_KEY=sk-ant-YOUR_KEY_HERE
+# 如果使用公司内部代理：
+# export ANTHROPIC_BASE_URL=http://your.company.proxy.com</pre>
+        <p>保存后执行 <code>source ~/.bashrc</code>（或重开终端）。</p>
+      </div>
+
+      <div class="step">
+        <h4>安装 Python 依赖</h4>
+        <pre>pip install feedparser requests anthropic openpyxl beautifulsoup4</pre>
+      </div>
+
+      <div class="step">
+        <h4>创建 .gitignore</h4>
+        <p>在仓库根目录创建 <code>.gitignore</code>：</p>
+        <pre>__pycache__/
+*.pyc
+*.xlsx
+!source_status.xlsx
+~$*
+.claude/</pre>
+      </div>
+
+      <div class="step">
+        <h4>运行脚本，验证全流程</h4>
+        <pre>python your_aggregator.py</pre>
+        <p>成功输出示例：</p>
+        <pre>[1/4] Fetching RSS feeds...     OK: 12 articles in past week
+[2/4] Filtering (Claude)...      Relevant: 44/369
+[3/4] Grouping & summarizing...  18 unique stories
+[4/4] Generating HTML...
+[5/5] Publishing to GitHub...
+  Pushed to GitHub — site will update in ~1 minute.</pre>
+        <p>约 1 分钟后访问 <code>https://YOUR_USERNAME.github.io/YOUR_REPO/</code> 即可看到网站。</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ 6. Skill 说明 ══ -->
+  <div class="section" id="skill">
+    <div class="section-label">Part 6</div>
+    <h2>使用 Claude Code Skill 快速复现</h2>
+    <p>本项目包含一个 Claude Code 自定义命令（skill），文件位于：</p>
+    <pre>.claude/commands/setup-newsletter.md</pre>
+    <p>你的同事只需将此文件复制到他项目的 <code>.claude/commands/</code> 目录下，即可在 Claude Code 中通过以下命令激活：</p>
+    <pre>/setup-newsletter</pre>
+
+    <h3>Skill 包含的内容</h3>
+    <div class="card">
+      <ul>
+        <li>✅ 完整的 Cloudflare Worker 代码（可直接粘贴）</li>
+        <li>✅ Python 脚本结构指引（Claude 会根据用户提供的 RSS 源自动生成定制版）</li>
+        <li>✅ 全部环境变量配置步骤</li>
+        <li>✅ GitHub Pages 开启步骤</li>
+        <li>✅ 密码 hash 计算与配置方法</li>
+        <li>✅ 常见错误排查表</li>
+      </ul>
+    </div>
+
+    <div class="info-box blue">
+      <span class="icon">📌</span>
+      <span>Skill 不包含具体 RSS 源——这是有意为之。每位用户需要提供自己关注领域的 RSS 源，Claude 会根据这些源自动生成定制化的 Python 脚本。</span>
+    </div>
+  </div>
+
+  <!-- ══ 7. 排查 ══ -->
+  <div class="section" id="troubleshoot">
+    <div class="section-label">Part 7</div>
+    <h2>常见问题排查</h2>
+    <table>
+      <tr>
+        <th>现象</th>
+        <th>原因</th>
+        <th>解决方法</th>
+      </tr>
+      <tr>
+        <td><code>git push</code> 报 "Could not connect"</td>
+        <td>Git 未使用系统代理</td>
+        <td><code>git config --global http.proxy http://localhost:PORT</code><br>（PORT 从 Windows 代理设置中查看）</td>
+      </tr>
+      <tr>
+        <td>Claude API 返回 401</td>
+        <td>Key 无效，或未设置公司代理 URL</td>
+        <td>检查 <code>ANTHROPIC_BASE_URL</code> 是否设置为公司内部代理</td>
+      </tr>
+      <tr>
+        <td>密码输入后提示错误</td>
+        <td>EDITOR_HASH 与实际密码不匹配</td>
+        <td>重新计算：<code>echo -n "密码" | sha256sum</code> 并更新 HTML</td>
+      </tr>
+      <tr>
+        <td>所有按钮无反应</td>
+        <td>JS 语法错误导致脚本块崩溃</td>
+        <td>打开 F12 → Console，查看红色报错行号，修复对应代码</td>
+      </tr>
+      <tr>
+        <td>Publish 返回 401</td>
+        <td>SAVE_PASSWORD_HASH 与 EDITOR_HASH 不一致</td>
+        <td>确保两者使用同一密码的 SHA-256</td>
+      </tr>
+      <tr>
+        <td>Source Report 下载 404</td>
+        <td>xlsx 被 .gitignore 忽略</td>
+        <td>在 .gitignore 加 <code>!source_status.xlsx</code>，然后 <code>git add -f source_status.xlsx</code></td>
+      </tr>
+      <tr>
+        <td>pw-modal 相关 TypeError</td>
+        <td>JS 脚本在 DOM 加载前引用了页面底部的元素</td>
+        <td>将该 addEventListener 包裹在 <code>document.addEventListener('DOMContentLoaded', ...)</code> 中</td>
+      </tr>
+      <tr>
+        <td>网站显示旧内容</td>
+        <td>浏览器缓存</td>
+        <td>Ctrl+Shift+R 强制刷新</td>
+      </tr>
+    </table>
+  </div>
+
+  <hr>
+  <p style="text-align:center;color:var(--muted);font-size:0.8rem;padding-bottom:20px;">
+    Auto Weekly Newsletter System · 基于 GitHub Pages + Cloudflare Workers + Anthropic Claude AI
+  </p>
+
+</div>
+
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'default', flowchart: { curve: 'basis', padding: 20 } });
+</script>
+</body>
+</html>
