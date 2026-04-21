@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mexico Weekly Newsletter — System Introduction & SOP</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #070b14;
+  --bg2:     #0d1220;
+  --card:    #0f1624;
+  --border:  rgba(0,212,255,0.14);
+  --text:    #cdd6f4;
+  --muted:   #6c7a96;
+  --cyan:    #00d4ff;
+  --purple:  #8b5cf6;
+  --green:   #00ff88;
+  --orange:  #f97316;
+  --red:     #ff4d6a;
+  --yellow:  #fbbf24;
+  --font:    'Inter', -apple-system, sans-serif;
+  --mono:    'JetBrains Mono', 'Fira Code', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Grid overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.022) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* ── Header ── */
+.page-header {
+  position: relative; z-index: 1;
+  padding: 64px 40px 68px;
+  background: linear-gradient(160deg, #0d1a2e 0%, #07101e 60%, #0a0614 100%);
+  border-bottom: 1px solid rgba(0,212,255,0.1);
+  overflow: hidden;
+  text-align: center;
+}
+.page-header::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent);
+  opacity: 0.5;
+}
+.header-glow {
+  position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 360px;
+  background: radial-gradient(ellipse, rgba(0,212,255,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+.header-eyebrow {
+  font-family: var(--mono); font-size: 0.63rem; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--cyan); opacity: 0.75; margin-bottom: 18px;
+}
+.header-flag {
+  display: flex; justify-content: center; align-items: center; gap: 10px;
+  margin-bottom: 18px;
+}
+.flag-cn, .flag-mx {
+  height: 28px; border-radius: 3px; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.flag-cn { width: 44px; background: #de2910; position: relative; }
+.flag-cn::after { content: '★'; position: absolute; top: 5px; left: 5px; color: #ffde00; font-size: 14px; line-height: 1; }
+.flag-mx { width: 44px; flex-direction: row; }
+.mx-g { flex: 1; background: #006847; }
+.mx-w { flex: 1; background: #fff; }
+.mx-r { flex: 1; background: #ce1126; }
+.arrow-icon { color: var(--cyan); font-size: 1.2rem; }
+.header-title {
+  font-size: 2.6rem; font-weight: 800; letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #fff 0%, var(--cyan) 50%, var(--purple) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 12px; line-height: 1.15;
+}
+.header-sub { font-size: 0.9rem; color: var(--muted); max-width: 520px; margin: 0 auto 22px; }
+.header-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.hbadge {
+  font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+  padding: 4px 11px; border-radius: 99px; border: 1px solid; letter-spacing: 0.5px;
+}
+.hbadge.c { border-color: rgba(0,212,255,0.4); color: var(--cyan); background: rgba(0,212,255,0.06); }
+.hbadge.p { border-color: rgba(139,92,246,0.4); color: var(--purple); background: rgba(139,92,246,0.06); }
+.hbadge.g { border-color: rgba(0,255,136,0.4); color: var(--green); background: rgba(0,255,136,0.06); }
+
+/* ── Nav ── */
+.sticky-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(7,11,20,0.9); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,212,255,0.08);
+  padding: 10px 24px;
+  display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+}
+.nav-pill {
+  font-family: var(--mono); font-size: 0.68rem; font-weight: 600;
+  padding: 5px 14px; border-radius: 99px; border: 1px solid rgba(0,212,255,0.15);
+  color: var(--muted); text-decoration: none; letter-spacing: 0.3px;
+  transition: all 0.15s;
+}
+.nav-pill:hover { color: var(--cyan); border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.05); }
+.nav-pill.active { color: var(--cyan); border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.07); }
+
+/* ── Layout ── */
+.container { max-width: 860px; margin: 0 auto; padding: 52px 24px 80px; position: relative; z-index: 1; }
+
+/* ── Part banner ── */
+.part-banner {
+  border-radius: 14px; padding: 28px 32px; margin-bottom: 36px;
+  position: relative; overflow: hidden;
+}
+.part-banner.part1 {
+  background: linear-gradient(135deg, #0d1a2e 0%, #0a1020 100%);
+  border: 1px solid rgba(0,212,255,0.2);
+}
+.part-banner.part2 {
+  background: linear-gradient(135deg, #100c1e 0%, #0d0a18 100%);
+  border: 1px solid rgba(139,92,246,0.25);
+}
+.part-banner::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.part-banner.part1::before { background: linear-gradient(90deg, transparent, var(--cyan), transparent); }
+.part-banner.part2::before { background: linear-gradient(90deg, transparent, var(--purple), var(--cyan), transparent); }
+.part-num {
+  font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px;
+}
+.part-banner.part1 .part-num { color: var(--cyan); opacity: 0.7; }
+.part-banner.part2 .part-num { color: var(--purple); opacity: 0.8; }
+.part-title { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+.part-desc { font-size: 0.88rem; color: var(--muted); margin: 0; max-width: 600px; }
+
+/* ── Section headings ── */
+h3 {
+  font-size: 1.05rem; font-weight: 700; color: #e2e8f0;
+  margin: 36px 0 14px; display: flex; align-items: center; gap: 8px;
+}
+h3::before {
+  content: ''; display: inline-block; width: 3px; height: 18px;
+  background: var(--cyan); border-radius: 99px; flex-shrink: 0;
+}
+p { font-size: 0.89rem; color: #94a3b8; margin-bottom: 13px; line-height: 1.75; }
+
+/* ── Feature showcase ── */
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin: 20px 0 32px; }
+.feat-card {
+  background: var(--card); border-radius: 12px; padding: 20px 22px;
+  border: 1px solid; position: relative; overflow: hidden;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.feat-card:hover { box-shadow: 0 0 20px rgba(0,212,255,0.06); }
+.feat-card.c { border-color: rgba(0,212,255,0.18); }
+.feat-card.p { border-color: rgba(139,92,246,0.18); }
+.feat-card.g { border-color: rgba(0,255,136,0.15); }
+.feat-card.o { border-color: rgba(249,115,22,0.18); }
+.feat-card .bg-glow {
+  position: absolute; top: -30px; right: -30px; width: 100px; height: 100px;
+  border-radius: 50%; opacity: 0.05; pointer-events: none;
+}
+.feat-card.c .bg-glow { background: var(--cyan); }
+.feat-card.p .bg-glow { background: var(--purple); }
+.feat-card.g .bg-glow { background: var(--green); }
+.feat-card.o .bg-glow { background: var(--orange); }
+.feat-icon { font-size: 1.4rem; margin-bottom: 10px; }
+.feat-title { font-size: 0.88rem; font-weight: 700; color: #e2e8f0; margin-bottom: 6px; }
+.feat-body { font-size: 0.8rem; color: var(--muted); line-height: 1.6; margin: 0; }
+
+/* ── Editor unlock box ── */
+.unlock-box {
+  background: linear-gradient(135deg, #0d1220 0%, #100c1e 100%);
+  border: 1px solid rgba(139,92,246,0.25); border-radius: 14px;
+  padding: 28px 30px; margin: 20px 0 32px; position: relative; overflow: hidden;
+}
+.unlock-box::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple), transparent);
+}
+.unlock-title {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.95rem; font-weight: 700; color: #e2e8f0; margin-bottom: 16px;
+}
+.unlock-badge {
+  font-family: var(--mono); font-size: 0.62rem; font-weight: 700; padding: 3px 9px;
+  border-radius: 99px; background: rgba(139,92,246,0.15); color: var(--purple);
+  border: 1px solid rgba(139,92,246,0.3);
+}
+.unlock-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.action-item {
+  background: rgba(0,0,0,0.2); border-radius: 9px; padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.05);
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.action-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.action-text { font-size: 0.8rem; color: #94a3b8; line-height: 1.55; }
+.action-text strong { color: #e2e8f0; display: block; margin-bottom: 2px; font-size: 0.82rem; }
+
+/* ── URL pill ── */
+.url-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,212,255,0.06); border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 8px; padding: 8px 14px; font-family: var(--mono); font-size: 0.78rem;
+  color: var(--cyan); text-decoration: none; transition: background 0.15s;
+  word-break: break-all;
+}
+.url-pill:hover { background: rgba(0,212,255,0.1); }
+.url-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; box-shadow: 0 0 6px var(--green); }
+
+/* ── Divider ── */
+.cyber-divider {
+  height: 1px; margin: 52px 0;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.12), rgba(139,92,246,0.12), transparent);
+}
+
+/* ── SOP Timeline ── */
+.timeline-header {
+  display: grid; grid-template-columns: 1fr 48px 1fr; gap: 0;
+  margin-bottom: 6px;
+}
+.tl-side {
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase; padding: 0 14px;
+}
+.tl-side.beijing { color: var(--red); text-align: right; }
+.tl-side.mexico  { color: var(--green); text-align: left; }
+.tl-center-head  { text-align: center; }
+
+.timeline { position: relative; }
+.tl-spine {
+  position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(180deg, rgba(0,212,255,0.1), rgba(0,212,255,0.25), rgba(0,212,255,0.1));
+  transform: translateX(-50%);
+}
+
+.tl-row {
+  display: grid; grid-template-columns: 1fr 48px 1fr;
+  align-items: start; margin-bottom: 10px; position: relative;
+}
+.tl-dot {
+  width: 12px; height: 12px; border-radius: 50%; margin: 14px auto 0;
+  position: relative; z-index: 2; flex-shrink: 0;
+}
+.tl-dot.beijing-dot { background: var(--red); box-shadow: 0 0 8px rgba(255,77,106,0.6); }
+.tl-dot.mexico-dot  { background: var(--green); box-shadow: 0 0 8px rgba(0,255,136,0.5); }
+.tl-dot.both-dot    { background: var(--cyan); box-shadow: 0 0 8px rgba(0,212,255,0.5); }
+.tl-dot.divider-dot {
+  width: 24px; height: 24px;
+  background: transparent; border: 2px solid rgba(0,212,255,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; color: var(--cyan);
+}
+
+.tl-card {
+  background: var(--card); border-radius: 10px; padding: 14px 16px;
+  font-size: 0.83rem; line-height: 1.6;
+}
+.tl-card.left  { border: 1px solid rgba(255,77,106,0.15); margin-right: 8px; text-align: right; }
+.tl-card.right { border: 1px solid rgba(0,255,136,0.15);  margin-left: 8px; }
+.tl-card.right2{ border: 1px solid rgba(0,212,255,0.15);  margin-left: 8px; }
+.tl-card.full  { grid-column: 1 / -1; border: 1px solid rgba(0,212,255,0.12); text-align: center; }
+.tl-empty {}
+.tl-time {
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.5px; margin-bottom: 5px;
+}
+.tl-time.bj { color: var(--red); }
+.tl-time.mx { color: var(--green); }
+.tl-card-title { font-weight: 700; color: #e2e8f0; margin-bottom: 4px; font-size: 0.85rem; }
+.tl-card p { font-size: 0.8rem; color: var(--muted); margin: 0; line-height: 1.55; }
+
+/* ── SOP Steps ── */
+.sop-steps { display: grid; gap: 12px; margin: 20px 0 28px; }
+.sop-step {
+  background: var(--card); border-radius: 12px; padding: 18px 22px;
+  border: 1px solid rgba(0,212,255,0.1);
+  display: flex; gap: 16px; align-items: flex-start;
+  transition: border-color 0.2s;
+}
+.sop-step:hover { border-color: rgba(0,212,255,0.25); }
+.sop-step.warn  { border-color: rgba(249,115,22,0.2); }
+.sop-step.final { border-color: rgba(0,255,136,0.2); background: rgba(0,255,136,0.02); }
+.sop-num {
+  flex-shrink: 0; width: 30px; height: 30px; border-radius: 8px;
+  background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.25);
+  color: var(--cyan); font-family: var(--mono); font-size: 0.78rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.sop-step.warn  .sop-num { background: rgba(249,115,22,0.08); border-color: rgba(249,115,22,0.3); color: var(--orange); }
+.sop-step.final .sop-num { background: rgba(0,255,136,0.08); border-color: rgba(0,255,136,0.3); color: var(--green); }
+.sop-body {}
+.sop-title { font-size: 0.9rem; font-weight: 700; color: #e2e8f0; margin-bottom: 5px; }
+.sop-desc  { font-size: 0.83rem; color: #94a3b8; line-height: 1.65; margin: 0; }
+.sop-desc code { font-family: var(--mono); font-size: 0.8em; background: rgba(0,212,255,0.07); color: var(--cyan); padding: 1px 6px; border-radius: 4px; border: 1px solid rgba(0,212,255,0.12); }
+.sop-desc strong { color: #e2e8f0; }
+
+/* ── Tips box ── */
+.tip-box {
+  border-radius: 10px; padding: 14px 18px; margin: 12px 0;
+  display: flex; gap: 10px; align-items: flex-start; font-size: 0.84rem;
+}
+.tip-box.blue   { background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.15); color: #7dd3fc; }
+.tip-box.green  { background: rgba(0,255,136,0.04); border: 1px solid rgba(0,255,136,0.15); color: #6ee7b7; }
+.tip-box.orange { background: rgba(249,115,22,0.05); border: 1px solid rgba(249,115,22,0.2); color: #fdba74; }
+.tip-box .tip-icon { flex-shrink: 0; font-size: 0.95rem; }
+
+/* ── Team tag ── */
+.team-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 700;
+  padding: 3px 10px; border-radius: 99px; letter-spacing: 0.5px;
+}
+.team-tag.bj { background: rgba(255,77,106,0.1); color: var(--red); border: 1px solid rgba(255,77,106,0.25); }
+.team-tag.mx { background: rgba(0,255,136,0.08); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+
+/* ── Code ── */
+code {
+  font-family: var(--mono); font-size: 0.82em;
+  background: rgba(0,212,255,0.07); color: var(--cyan);
+  padding: 2px 7px; border-radius: 5px; border: 1px solid rgba(0,212,255,0.12);
+}
+
+ul, ol { padding-left: 20px; margin-bottom: 14px; }
+li { margin: 5px 0; font-size: 0.87rem; color: #94a3b8; }
+li strong { color: #e2e8f0; }
+
+/* ── Checklist ── */
+.checklist { list-style: none; padding: 0; }
+.checklist li {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 7px 0; border-bottom: 1px solid rgba(0,212,255,0.05);
+}
+.checklist li:last-child { border: none; }
+.check-box {
+  flex-shrink: 0; width: 18px; height: 18px; border-radius: 4px;
+  background: rgba(0,212,255,0.06); border: 1px solid rgba(0,212,255,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; color: var(--cyan); margin-top: 2px;
+}
+.check-text { font-size: 0.84rem; color: #94a3b8; line-height: 1.6; }
+.check-text strong { color: #e2e8f0; }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<div class="page-header">
+  <div class="header-glow"></div>
+  <div class="header-content">
+    <div class="header-eyebrow">// Internal Reference · Mexico-China Collaboration</div>
+    <div class="header-flag">
+      <div class="flag-cn"></div>
+      <div class="arrow-icon">⟷</div>
+      <div class="flag-mx"><div class="mx-g"></div><div class="mx-w"></div><div class="mx-r"></div></div>
+    </div>
+    <div class="header-title">Mexico Weekly Newsletter</div>
+    <div class="header-sub">How the system works · What you can do · Weekly collaboration SOP</div>
+    <div class="header-badges">
+      <span class="hbadge c">Auto-Generated</span>
+      <span class="hbadge p">Browser Editing</span>
+      <span class="hbadge g">Weekly Cadence</span>
+      <span class="hbadge c">GitHub Pages</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NAV ══ -->
+<div class="sticky-nav">
+  <a class="nav-pill active" href="#part1">Part 1 · System</a>
+  <a class="nav-pill" href="#reading">Reading the Newsletter</a>
+  <a class="nav-pill" href="#editor">Editor Features</a>
+  <a class="nav-pill" href="#part2">Part 2 · SOP</a>
+  <a class="nav-pill" href="#sop-steps">Weekly Steps</a>
+</div>
+
+<div class="container">
+
+  <!-- ══════════════════════════════
+       PART 1 — SYSTEM OVERVIEW
+  ══════════════════════════════ -->
+  <div id="part1">
+    <div class="part-banner part1">
+      <div class="part-num">// Part 01</div>
+      <div class="part-title">How the System Works</div>
+      <p class="part-desc">An automated pipeline that goes from raw RSS feeds to a published, interactive newsletter website — fully hands-off except for a weekly quality check.</p>
+    </div>
+
+    <!-- What it does -->
+    <h3 id="reading">What the system does automatically</h3>
+    <p>Every week, a Python script runs on the Beijing side and does the following in sequence — no human intervention needed until the final review step.</p>
+
+    <div class="feature-grid">
+      <div class="feat-card c">
+        <div class="bg-glow"></div>
+        <div class="feat-icon">📡</div>
+        <div class="feat-title">Fetches news from 30+ sources</div>
+        <p class="feat-body">Pulls articles from RSS feeds across financial media, government releases, central bank announcements, and fintech outlets — covering the past 7 days.</p>
+      </div>
+      <div class="feat-card p">
+        <div class="bg-glow"></div>
+        <div class="feat-icon">🤖</div>
+        <div class="feat-title">AI filters & summarizes</div>
+        <p class="feat-body">Claude AI scores each article for relevance to Mexico's economy and fintech landscape, removes duplicates, rewrites headlines for clarity, and generates concise summaries.</p>
+      </div>
+      <div class="feat-card g">
+        <div class="bg-glow"></div>
+        <div class="feat-icon">🌐</div>
+        <div class="feat-title">Publishes to the website</div>
+        <p class="feat-body">The generated newsletter is pushed to GitHub and the live website updates within ~1 minute. No manual upload needed.</p>
+      </div>
+      <div class="feat-card o">
+        <div class="bg-glow"></div>
+        <div class="feat-icon">📊</div>
+        <div class="feat-title">Tracks source health</div>
+        <p class="feat-body">An Excel report (Source Report) is generated alongside the newsletter, showing which RSS sources succeeded or failed, and how many articles were fetched from each.</p>
+      </div>
+    </div>
+
+    <!-- The website -->
+    <h3>The newsletter website</h3>
+    <p>The newsletter is published at the following URL. It is publicly accessible — no login needed to read it.</p>
+    <a class="url-pill" href="https://hansonkjzheng-source.github.io/mexico-newsletter/" target="_blank">
+      <span class="dot"></span>
+      https://hansonkjzheng-source.github.io/mexico-newsletter/
+    </a>
+    <br/><br/>
+    <p>The website is organized into <strong style="color:#e2e8f0">three topic sections</strong>:</p>
+    <div class="feature-grid" style="margin-top:12px;">
+      <div class="feat-card c">
+        <div class="bg-glow"></div>
+        <div class="feat-icon">🏛️</div>
+        <div class="feat-title">Macro &amp; Policy</div>
+        <p class="feat-body">Central bank decisions, government fiscal policy, regulatory announcements, GDP data, inflation, and broader economic signals.</p>
+      </div>
+      <div class="feat-card p">
+        <div class="bg-glow"></div>
+        <div class="feat-icon">🏦</div>
+        <div class="feat-title">Financial Players</div>
+        <p class="feat-body">Bank earnings, fintech funding rounds, payments companies, neobanks, remittance players, and key industry partnerships.</p>
+      </div>
+      <div class="feat-card g">
+        <div class="bg-glow"></div>
+        <div class="feat-icon">🌎</div>
+        <div class="feat-title">International Impact</div>
+        <p class="feat-body">US-Mexico trade dynamics, tariff news, cross-border investment flows, and global macro events that affect Mexico.</p>
+      </div>
+    </div>
+
+    <!-- Reading features -->
+    <h3 id="reading">Reading &amp; navigating the newsletter</h3>
+    <p>The newsletter is designed to be quick to scan. Each story is collapsed by default — click to expand and read the full summary and sources.</p>
+
+    <div class="feature-grid" style="margin-top:12px;">
+      <div class="feat-card c">
+        <div class="bg-glow"></div>
+        <div class="feat-icon">🔽</div>
+        <div class="feat-title">Expandable cards</div>
+        <p class="feat-body">Click any news card to expand and read the full summary. Click again to collapse. Each card shows the headline by default.</p>
+      </div>
+      <div class="feat-card p">
+        <div class="bg-glow"></div>
+        <div class="feat-icon">⬇ ⬆</div>
+        <div class="feat-title">Expand / Collapse All</div>
+        <p class="feat-body">The <strong style="color:#e2e8f0">Expand All</strong> button at the top opens all stories at once for a full read. Click again to collapse all.</p>
+      </div>
+      <div class="feat-card g">
+        <div class="bg-glow"></div>
+        <div class="feat-icon">🔗</div>
+        <div class="feat-title">Source links</div>
+        <p class="feat-body">Each card shows one or more source links — click to open the original article for verification or deeper reading.</p>
+      </div>
+      <div class="feat-card o">
+        <div class="bg-glow"></div>
+        <div class="feat-icon">🧭</div>
+        <div class="feat-title">Section navigation</div>
+        <p class="feat-body">The three category pills at the top of the page scroll directly to each section — useful on longer newsletters.</p>
+      </div>
+    </div>
+
+    <!-- Editor -->
+    <div id="editor"></div>
+    <h3>Editor features (after unlocking)</h3>
+    <p>Click the <strong style="color:#e2e8f0">🔒 lock icon</strong> in the bottom-right corner and enter the editor password to unlock edit mode. A toolbar appears at the bottom.</p>
+
+    <div class="unlock-box">
+      <div class="unlock-title">
+        <span>🔓 Edit Mode — unlocked actions</span>
+        <span class="unlock-badge">PASSWORD REQUIRED</span>
+      </div>
+      <div class="unlock-actions">
+        <div class="action-item">
+          <div class="action-icon">✏️</div>
+          <div class="action-text">
+            <strong>Edit title or summary</strong>
+            Hover over any card → click the edit icon → modify title or body text directly.
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-icon">🗑️</div>
+          <div class="action-text">
+            <strong>Delete a card</strong>
+            Hover over any card → click the delete icon → card is removed immediately.
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-icon">⠿</div>
+          <div class="action-text">
+            <strong>Drag to reorder</strong>
+            Drag the handle on the left of any card up or down to reorder stories within a section.
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-icon">📄</div>
+          <div class="action-text">
+            <strong>Download Word doc</strong>
+            Click <code>⬇ Word</code> — downloads a .doc file with all titles (page 1) and titles + summaries (page 2).
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-icon">📊</div>
+          <div class="action-text">
+            <strong>Download Source Report</strong>
+            Click <code>⬇ Source Report</code> — downloads an Excel file showing which RSS sources succeeded or failed this week.
+          </div>
+        </div>
+        <div class="action-item">
+          <div class="action-icon">⬆️</div>
+          <div class="action-text">
+            <strong>Publish changes</strong>
+            Click <code>⬆ Publish</code> — your edits go live on the website for everyone within seconds.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box blue">
+      <span class="tip-icon">💡</span>
+      <span>You do <strong>not</strong> need to re-run the Python script to publish edits. The Publish button sends your changes directly to the live website via Cloudflare — no technical steps required.</span>
+    </div>
+  </div>
+
+  <div class="cyber-divider"></div>
+
+  <!-- ══════════════════════════════
+       PART 2 — COLLABORATION SOP
+  ══════════════════════════════ -->
+  <div id="part2">
+    <div class="part-banner part2">
+      <div class="part-num">// Part 02</div>
+      <div class="part-title">Weekly Collaboration SOP</div>
+      <p class="part-desc">How the Beijing and Mexico teams work together every week to produce, review, and distribute the newsletter.</p>
+    </div>
+
+    <!-- Timeline -->
+    <h3>Weekly rhythm — Beijing &amp; Mexico</h3>
+    <p>The two teams operate across a <strong style="color:#e2e8f0">13-hour time difference</strong>. Beijing runs the script Wednesday afternoon, which is early Wednesday morning in Mexico City — so by the time the Mexico team starts work, the newsletter is already live and ready for review.</p>
+
+    <div style="margin: 24px 0 36px;">
+      <div class="timeline-header">
+        <div class="tl-side beijing">🇨🇳 Beijing (CST)</div>
+        <div class="tl-center-head"></div>
+        <div class="tl-side mexico">🇲🇽 Mexico City (CST)</div>
+      </div>
+
+      <div class="timeline">
+        <div class="tl-spine"></div>
+
+        <!-- Wednesday PM Beijing -->
+        <div class="tl-row">
+          <div class="tl-card left">
+            <div class="tl-time bj">Wednesday · 2–5 PM (BJT)</div>
+            <div class="tl-card-title">🤖 Run Python script</div>
+            <p>Fetch news → AI filter → generate newsletter → auto-push to website. Entire process takes ~10 minutes.</p>
+          </div>
+          <div class="tl-dot beijing-dot"></div>
+          <div class="tl-empty"></div>
+        </div>
+
+        <!-- Same moment Mexico early morning -->
+        <div class="tl-row">
+          <div class="tl-empty"></div>
+          <div class="tl-dot both-dot"></div>
+          <div class="tl-card right2">
+            <div class="tl-time mx">Wednesday · 1–4 AM (MXT)</div>
+            <div class="tl-card-title">🌐 Website goes live</div>
+            <p>Newsletter auto-published at <a href="https://hansonkjzheng-source.github.io/mexico-newsletter/" style="color:var(--cyan);font-size:0.78rem;">hansonkjzheng-source.github.io/mexico-newsletter/</a></p>
+          </div>
+        </div>
+
+        <!-- Mexico morning review -->
+        <div class="tl-row">
+          <div class="tl-empty"></div>
+          <div class="tl-dot mexico-dot"></div>
+          <div class="tl-card right">
+            <div class="tl-time mx">Wednesday morning (MXT)</div>
+            <div class="tl-card-title">✅ Mexico team reviews &amp; publishes</div>
+            <p>Review content, make edits, then publish the final version before distributing to stakeholders.</p>
+          </div>
+        </div>
+
+        <!-- Distribution -->
+        <div class="tl-row">
+          <div class="tl-empty"></div>
+          <div class="tl-dot mexico-dot"></div>
+          <div class="tl-card right">
+            <div class="tl-time mx">Wednesday (after review)</div>
+            <div class="tl-card-title">📤 Distribute to group</div>
+            <p>Download Word doc → copy title summary (page 1) → send to the sharing group.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SOP Steps -->
+    <h3 id="sop-steps">Mexico team — Wednesday review checklist</h3>
+    <p>After Beijing pushes the newsletter, the Mexico team follows these steps. <strong style="color:#e2e8f0">Unlock the editor first</strong> by clicking the 🔒 lock icon (bottom right) and entering the password.</p>
+
+    <div class="sop-steps">
+
+      <div class="sop-step warn">
+        <div class="sop-num">1</div>
+        <div class="sop-body">
+          <div class="sop-title">Check Source Report for failed RSS sources</div>
+          <p class="sop-desc">
+            In edit mode, click <code>⬇ Source Report</code> to download the Excel file. Open it and look for sources marked as <strong>FAIL</strong> — these feeds could not be fetched automatically this week.
+            <br/><br/>
+            For any failed sources that are critical to your coverage, <strong>manually browse those outlets</strong> and note any important stories you want to add. You can add them in Step 3.
+          </p>
+        </div>
+      </div>
+
+      <div class="sop-step">
+        <div class="sop-num">2</div>
+        <div class="sop-body">
+          <div class="sop-title">Review AI-generated stories for accuracy</div>
+          <p class="sop-desc">
+            Read through the newsletter on the website. For any story that seems surprising, unclear, or potentially incorrect:
+            <br/><br/>
+            → Click the <strong>source link(s)</strong> on that card to open the original article(s) and cross-verify the content.<br/>
+            → If the headline or summary is inaccurate, hover over the card → click the <strong>edit icon (✏️)</strong> → correct the title or body text.
+          </p>
+        </div>
+      </div>
+
+      <div class="sop-step">
+        <div class="sop-num">3</div>
+        <div class="sop-body">
+          <div class="sop-title">Remove, add, or re-categorize stories</div>
+          <p class="sop-desc">
+            <strong>To delete</strong> an inappropriate or irrelevant story: hover the card → click the <strong>delete icon (🗑️)</strong>.
+            <br/><br/>
+            <strong>To add a story</strong> you collected manually (e.g. a product update notification from an app, an industry contact tip, or a story from a failed source): use the edit icon on an existing card to repurpose it, or ask Beijing to add a new card template if needed.
+            <br/><br/>
+            <strong>To move a story</strong> to a different section or change its order: drag the handle (⠿) on the left side of the card to reposition it within its section. Note that moving between sections (e.g. from Macro to Financial Players) currently requires deleting and re-adding.
+          </p>
+        </div>
+      </div>
+
+      <div class="sop-step final">
+        <div class="sop-num">4</div>
+        <div class="sop-body">
+          <div class="sop-title">Publish the reviewed newsletter</div>
+          <p class="sop-desc">
+            Once you are satisfied with the content, click the <code>⬆ Publish</code> button in the bottom toolbar. The website will update within a few seconds — all edits go live for anyone who visits the URL.
+            <br/><br/>
+            You can verify by opening the site in a new incognito tab.
+          </p>
+        </div>
+      </div>
+
+      <div class="sop-step final">
+        <div class="sop-num">5</div>
+        <div class="sop-body">
+          <div class="sop-title">Download Word doc and send the summary to the group</div>
+          <p class="sop-desc">
+            In edit mode, click <code>⬇ Word</code> to download the Word document. Open it in Word.
+            <br/><br/>
+            <strong>Page 1</strong> contains all story titles organized by section, numbered, with links to the full website at the bottom — this is the <strong>summary you paste into the sharing group</strong>.<br/>
+            <strong>Page 2</strong> contains full titles + summaries for reference if colleagues want more detail.
+            <br/><br/>
+            Copy the content from Page 1 and send it to the distribution group.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Full checklist -->
+    <h3>Quick reference checklist</h3>
+    <p>Use this as a mental checklist each Wednesday:</p>
+
+    <div style="background:var(--card);border:1px solid rgba(0,212,255,0.1);border-radius:12px;padding:20px 24px;margin-bottom:28px;">
+      <ul class="checklist">
+        <li>
+          <span class="check-box">→</span>
+          <span class="check-text"><strong>Unlock editor</strong> — click 🔒 lock icon → enter password</span>
+        </li>
+        <li>
+          <span class="check-box">→</span>
+          <span class="check-text"><strong>Download Source Report</strong> → check failed sources → manually collect missing stories if needed</span>
+        </li>
+        <li>
+          <span class="check-box">→</span>
+          <span class="check-text"><strong>Read through all stories</strong> → click source links for any that seem incorrect → edit as needed</span>
+        </li>
+        <li>
+          <span class="check-box">→</span>
+          <span class="check-text"><strong>Delete</strong> stories that are irrelevant or inappropriate</span>
+        </li>
+        <li>
+          <span class="check-box">→</span>
+          <span class="check-text"><strong>Add</strong> any manually-collected stories not in the auto-generated list</span>
+        </li>
+        <li>
+          <span class="check-box">→</span>
+          <span class="check-text"><strong>Reorder / re-categorize</strong> any misplaced stories using drag handles</span>
+        </li>
+        <li>
+          <span class="check-box">→</span>
+          <span class="check-text"><strong>Publish</strong> — click ⬆ Publish button → verify in incognito tab</span>
+        </li>
+        <li>
+          <span class="check-box">→</span>
+          <span class="check-text"><strong>Download Word</strong> → copy Page 1 titles → send to distribution group</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="tip-box green">
+      <span class="tip-icon">✅</span>
+      <span>The entire review and publish process typically takes <strong>15–30 minutes</strong> depending on the number of stories and how much editing is needed. The Word summary takes under a minute once the newsletter is finalized.</span>
+    </div>
+
+    <div class="tip-box orange">
+      <span class="tip-icon">⚠️</span>
+      <span>If you notice the newsletter was <strong>not updated this week</strong> (e.g., stories are from a previous week), check with the Beijing team — the Python script may not have run, or the push to GitHub may have failed.</span>
+    </div>
+
+  </div>
+
+  <div class="cyber-divider"></div>
+
+  <div style="text-align:center;padding:16px 0 8px;font-family:var(--mono);font-size:0.62rem;color:rgba(108,122,150,0.45);letter-spacing:1.5px;">
+    MEXICO WEEKLY NEWSLETTER · INTERNAL REFERENCE · BEIJING–MEXICO COLLABORATION
+  </div>
+
+</div>
+
+<script>
+/* Highlight nav pill on scroll */
+const sections = ['part1','part2'];
+const pills = document.querySelectorAll('.nav-pill');
+window.addEventListener('scroll', function() {
+  var current = '';
+  document.querySelectorAll('[id]').forEach(function(el) {
+    if (window.scrollY >= el.offsetTop - 120) current = el.id;
+  });
+  pills.forEach(function(p) {
+    p.classList.remove('active');
+    if (p.getAttribute('href') === '#' + current) p.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
