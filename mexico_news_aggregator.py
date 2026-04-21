@@ -13,6 +13,8 @@ import re
 import os
 import time
 import sys
+import shutil
+import subprocess
 from collections import defaultdict
 from bs4 import BeautifulSoup
 import anthropic
@@ -23,11 +25,10 @@ import anthropic
 
 TODAY = datetime.now(timezone.utc)
 ONE_WEEK_AGO = TODAY - timedelta(days=7)
+REPO_DIR         = "d:/AI Projects/Auto Weekly NL_202604"
 OUTPUT_FILE      = "d:/AI Projects/Auto Weekly NL_202604/mexico_weekly_news.html"
+INDEX_FILE       = "d:/AI Projects/Auto Weekly NL_202604/index.html"
 EXCEL_FILE       = "d:/AI Projects/Auto Weekly NL_202604/source_status.xlsx"
-EMAIL_LIST_FILE  = "d:/AI Projects/Auto Weekly NL_202604/Email List.xlsx"
-OUTLOOK_SENDER   = os.environ.get("OUTLOOK_SENDER", "")
-OUTLOOK_PASSWORD = os.environ.get("OUTLOOK_PASSWORD", "")
 
 HEADERS = {
     "User-Agent": (
@@ -1129,6 +1130,15 @@ body.edit-mode .edit-mode-bar { display: flex; }
   transition: background 0.15s;
 }
 .btn-download-word:hover { background: #1e40af; }
+.btn-source-report {
+  background: #065f46; color: #fff;
+  border: none;
+  padding: 5px 12px; border-radius: 99px;
+  font-size: 0.75rem; font-weight: 600; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center;
+  transition: background 0.15s;
+}
+.btn-source-report:hover { background: #047857; }
 
 .pw-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.55);
@@ -1472,7 +1482,7 @@ document.getElementById('pw-modal').addEventListener('click', function(e) {
 
 /* ── Editor password gate ── */
 var EDITOR_HASH   = '865ed16d3bc1a45492524f4b4c050fff4f4f6875637cc46820c76ffbb646504c';
-var PUBLISH_URL   = 'NETLIFY_FUNCTION_URL_PLACEHOLDER';
+var PUBLISH_URL   = 'https://mexico-newsletter-save.hanson-kj-zheng.workers.dev';
 var editorSession = null;
 
 async function _sha256(s) {
@@ -1504,42 +1514,54 @@ async function checkEditorPassword() {
 }
 function enterEditMode() { document.body.classList.add('edit-mode'); }
 function exitEditMode() { document.body.classList.remove('edit-mode'); editorSession = null; }
-async function downloadTitlesWord() {
+function downloadTitlesWord() {
   var sections_meta = [
     { id: 'macro',         label: 'Macro & Policy' },
     { id: 'financial',     label: 'Financial Players' },
     { id: 'international', label: 'International Impact' }
   ];
-  var children = [];
-  var D = docx;
+  var H2   = 'font-family:Calibri,sans-serif;font-size:16pt;font-weight:bold;color:#1e3a5f;margin:18pt 0 6pt 0';
+  var P    = 'font-family:Calibri,sans-serif;font-size:11pt;margin:4pt 0 4pt 12pt';
+  var PB   = 'font-family:Calibri,sans-serif;font-size:11pt;font-weight:bold;margin:14pt 0 2pt 0';
+  var PS   = 'font-family:Calibri,sans-serif;font-size:10pt;color:#374151;margin:0 0 8pt 0;line-height:1.5';
+  var LINK = 'font-family:Calibri,sans-serif;font-size:10pt;color:#374151;margin:24pt 0 0 0';
+  var page1 = '', page2 = '', num = 1;
   sections_meta.forEach(function(sec) {
     var sectionEl = document.getElementById('section-' + sec.id);
     if (!sectionEl) return;
-    var titles = Array.from(sectionEl.querySelectorAll('.card-title'))
-                     .map(function(el){ return el.textContent.trim(); })
-                     .filter(Boolean);
+    var cards = Array.from(sectionEl.querySelectorAll('.card'));
+    var titles = cards.map(function(c){ return ((c.querySelector('.card-title')||{}).textContent||'').trim(); }).filter(Boolean);
     if (!titles.length) return;
-    children.push(new D.Paragraph({ text: sec.label, heading: D.HeadingLevel.HEADING_1 }));
-    titles.forEach(function(t){
-      children.push(new D.Paragraph({
-        children: [new D.TextRun({ text: '\u2022 ' + t, size: 22 })]
-      }));
+    page1 += '<h2 style="' + H2 + '">' + sec.label + '</h2>';
+    titles.forEach(function(t){ page1 += '<p style="' + P + '">' + num++ + '. ' + t + '</p>'; });
+    page2 += '<h2 style="' + H2 + '">' + sec.label + '</h2>';
+    cards.forEach(function(card) {
+      var title   = ((card.querySelector('.card-title')||{}).textContent||'').trim();
+      var summary = ((card.querySelector('.card-summary')||{}).textContent||'').trim();
+      if (!title) return;
+      page2 += '<p style="' + PB + '">' + title + '</p>';
+      if (summary) page2 += '<p style="' + PS + '">' + summary + '</p>';
     });
-    children.push(new D.Paragraph({ text: '' }));
   });
-  var doc = new D.Document({ sections: [{ children: children }] });
-  var blob = await D.Packer.toBlob(doc);
+  page1 += '<p style="' + LINK + '">Above news at a glance for this week, check here for news details: <a href="https://hansonkjzheng-source.github.io/mexico-newsletter/">https://hansonkjzheng-source.github.io/mexico-newsletter/</a></p>';
+  page1 += '<p style="' + LINK + '">Check past weeks here: <a href="https://cooper.didichuxing.com/team-file/2199563718712/2203658047439">https://cooper.didichuxing.com/team-file/2199563718712/2203658047439</a></p>';
+  var spacer = '<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>';
+  var body = page1 + spacer + '<div style="page-break-before:always"></div>' + page2;
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>' + body + '</body></html>';
+  var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
   var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
   a.href = url;
   var d = new Date();
   var ds = d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2);
-  a.download = 'Mexico_Newsletter_Titles_' + ds + '.docx';
+  a.download = 'Mexico_Newsletter_Titles_' + ds + '.doc';
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
 async function publishChanges() {
-  if (PUBLISH_URL === 'NETLIFY_FUNCTION_URL_PLACEHOLDER') {
+  if (!PUBLISH_URL || PUBLISH_URL === 'NETLIFY_FUNCTION_URL_PLACEHOLDER') {
     alert('Publish endpoint not configured yet.');
     return;
   }
@@ -1581,6 +1603,7 @@ async function publishChanges() {
 <div class="edit-mode-bar">
   <span class="edit-mode-label">&#9998; Editor</span>
   <button class="btn-download-word" onclick="downloadTitlesWord()">&#8595; Word</button>
+  <a class="btn-source-report" href="source_status.xlsx" download>&#8595; Source Report</a>
   <button class="btn-publish" onclick="publishChanges()">&#8679; Publish</button>
   <button class="btn-exit-edit" onclick="exitEditMode()">Exit</button>
 </div>
@@ -1863,12 +1886,7 @@ def main():
     generate_excel(source_results, EXCEL_FILE)
     print(f"  Excel saved to: {EXCEL_FILE}")
 
-    # ── Email source report ───────────────────────────────────────
-    if OUTLOOK_SENDER and OUTLOOK_PASSWORD:
-        print(f"\n  Sending source report email...")
-        send_source_report()
-    else:
-        print(f"\n  Email skipped — set OUTLOOK_SENDER and OUTLOOK_PASSWORD env vars to enable.")
+    # (Email removed — source_status.xlsx is published to the website instead)
 
     if total_raw == 0:
         print("\nNo articles fetched. Check your network or RSS URLs.")
@@ -1910,6 +1928,20 @@ def main():
     print(f"  Sources OK    : {', '.join(ok_names) or 'none'}")
     print(f"  Sources FAIL  : {', '.join(fail_names) or 'none'}")
     print("=" * 65)
+
+    # ── Auto-publish: copy to index.html and push to GitHub Pages ──
+    print(f"\n[5/5] Publishing to GitHub Pages...")
+    shutil.copy2(OUTPUT_FILE, INDEX_FILE)
+    print(f"  Copied {OUTPUT_FILE} -> {INDEX_FILE}")
+    date_str = TODAY.strftime("%Y-%m-%d")
+    try:
+        subprocess.run(["git", "-C", REPO_DIR, "add", "index.html", "source_status.xlsx"], check=True)
+        subprocess.run(["git", "-C", REPO_DIR, "commit", "-m", f"Newsletter {date_str}"], check=True)
+        subprocess.run(["git", "-C", REPO_DIR, "push", "origin", "main"], check=True)
+        print(f"  Pushed to GitHub — site will update in ~1 minute.")
+    except subprocess.CalledProcessError as e:
+        print(f"  WARNING: Git push failed: {e}")
+        print(f"  Run manually: cd '{REPO_DIR}' && git add index.html source_status.xlsx && git push origin main")
 
 
 if __name__ == "__main__":

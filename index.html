@@ -610,6 +610,15 @@ body.edit-mode .edit-mode-bar { display: flex; }
   transition: background 0.15s;
 }
 .btn-download-word:hover { background: #1e40af; }
+.btn-source-report {
+  background: #065f46; color: #fff;
+  border: none;
+  padding: 5px 12px; border-radius: 99px;
+  font-size: 0.75rem; font-weight: 600; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center;
+  transition: background 0.15s;
+}
+.btn-source-report:hover { background: #047857; }
 
 .pw-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.55);
@@ -1108,6 +1117,7 @@ async function publishChanges() {
 <div class="edit-mode-bar">
   <span class="edit-mode-label">&#9998; Editor</span>
   <button class="btn-download-word" onclick="downloadTitlesWord()">&#8595; Word</button>
+  <a class="btn-source-report" href="source_status.xlsx" download>&#8595; Source Report</a>
   <button class="btn-publish" onclick="publishChanges()">&#8679; Publish</button>
   <button class="btn-exit-edit" onclick="exitEditMode()">Exit</button>
 </div>
