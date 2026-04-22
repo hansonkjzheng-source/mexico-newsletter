@@ -1074,8 +1074,7 @@ async function publishChanges() {
   btn.innerHTML = '&#8679; Publish';
   btn.disabled = false;
   document.body.classList.remove('edit-mode');
-  var snapshot = '<!DOCTYPE html>
-' + document.documentElement.outerHTML;
+  var snapshot = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
   document.body.classList.add('edit-mode');
 
   /* Now switch to saving state (after snapshot is taken) */
