@@ -114,6 +114,39 @@ RSS_SOURCES = [
         "type": "free",
         "lang": "en",
     },
+    # ── Mexico Business / Fintech Specialty ──
+    {
+        "name": "El CEO",
+        # Confirmed working: 10 entries (verified 2026-04-22)
+        "rss": "https://elceo.com/feed/",
+        "rss_alt": None,
+        "type": "free",
+        "lang": "es",
+    },
+    {
+        "name": "Alto Nivel",
+        # Confirmed working: 30 entries (verified 2026-04-22)
+        "rss": "https://www.altonivel.com.mx/feed/",
+        "rss_alt": None,
+        "type": "free",
+        "lang": "es",
+    },
+    {
+        "name": "iupana",
+        # Confirmed working: 10 entries — LatAm fintech specialist (verified 2026-04-22)
+        "rss": "https://iupana.com/feed/",
+        "rss_alt": None,
+        "type": "free",
+        "lang": "en",
+    },
+    {
+        "name": "América Economía",
+        # Confirmed working: 10 entries — pan-LatAm financial/business media (verified 2026-04-22)
+        "rss": "https://americaeconomia.com/rss.xml",
+        "rss_alt": "https://americaeconomia.com/feed/",
+        "type": "free",
+        "lang": "es",
+    },
     # ── Paid Sources (try RSS anyway) ──
     {
         "name": "Fintech Expert",
@@ -267,25 +300,48 @@ def fetch_rss(source: dict):
 
 RELEVANCE_SYSTEM = """You are a senior analyst filtering news for a Mexico financial & fintech weekly briefing.
 
-RELEVANT topics (any of these qualifies):
-1. Mexico macroeconomy: GDP, inflation, Banxico interest rates, peso (MXN/USD), employment, government budget, trade balance
-2. Mexico politics & policy: legislation, regulations, CNBV/Banxico announcements, tax changes, anything impacting finance or business
-3. Mexico fintech players (products, funding, partnerships, campaigns, layoffs, expansions):
-   Nu, Mercado Pago, Stori, Plata, Kueski, Klar, Openbank, Uala (Ualá), Aplazo, Revolut, Clip, Conekta, Bitso, Kushki
-4. Mexico traditional banks (same dimensions):
-   BBVA Mexico, Santander Mexico, Bancoppel, Banco Azteca, Citibanamex, Scotiabank Mexico, HSBC Mexico, Inbursa
-5. Financial products in Mexico: cash loans (crédito personal), credit cards, BNPL/meses sin intereses, Cuenta/savings accounts, neobanks, payments, remittances
-6. International events with CLEAR, DIRECT impact on Mexico:
-   US-Mexico tariffs/trade, USD/MXN, oil prices (Mexico is an oil exporter), nearshoring, remittances from the US
-7. Overseas/international activities of Mexico's core fintech or banking players — even if the event happens outside Mexico:
-   e.g. Nu expanding to the US, Plata launching in another country, Mercado Pago entering a new market, Clip or Bitso raising a global round.
-   Core players: Nu, Mercado Pago, Stori, Plata, Kueski, Klar, Openbank, Uala, Aplazo, Revolut, Clip, Conekta, Bitso, Kushki,
-   BBVA Mexico, Santander Mexico, Bancoppel, Banco Azteca, Citibanamex, Scotiabank Mexico, HSBC Mexico, Inbursa
+RELEVANT topics — include ONLY if the article clearly fits one of these:
 
-NOT relevant: general world politics without Mexico link, sports, entertainment, purely US/EU domestic news, tech news unrelated to finance."""
+1. Mexico macroeconomy & major policy: GDP, inflation, Banxico interest rates, peso (MXN/USD), employment, government budget, trade balance, MAJOR fiscal/regulatory policy changes (enacted OR announced) that directly affect finance, credit, or payments.
+
+2. Financial players — business progress, products, funding, campaigns:
+   CORE players (well-known, no intro needed):
+     Fintech: Nu (Nubank), Mercado Pago, Stori, Plata, Kueski, Klar, Openbank, Uala (Ualá), Aplazo, Revolut, Clip, Conekta, Bitso, Kushki
+     Banking: BBVA Mexico, Santander Mexico, Bancoppel, Banco Azteca, Citibanamex, Scotiabank Mexico, HSBC Mexico, Inbursa
+   NON-CORE players: Also include other significant Mexican or LatAm financial companies (digital banks, fintechs, lenders, payment processors, insurtechs, etc.) if the story is substantive and meaningful. Their name will be followed by a parenthetical intro in the summary.
+   Relevant dimensions: new/changed financial products (personal loans, credit cards, BNPL, Cuenta/savings accounts, payments), funding rounds, major operational promos/campaigns, expansions, layoffs, partnerships, regulatory actions against them.
+   This includes overseas activities of these players (e.g. Nu expanding to the US, Mercado Pago entering a new market).
+
+3. International events with CLEAR, DIRECT, SIGNIFICANT impact on Mexico's economy, finance, or payments:
+   US-Mexico tariffs/trade policy, USD/MXN exchange rate drivers, oil prices (Mexico is an oil exporter), nearshoring trends, US remittance flows to Mexico.
+   The article must explicitly discuss or clearly imply the Mexico impact — vague international stories do not qualify.
+
+EXCLUDE (weakly relevant — do NOT include):
+- Mexico infrastructure news (highway sales, airport projects, port construction) unless they have systemic financial/economic significance
+- Pemex news UNLESS it has clear macroeconomic or fiscal significance (e.g. Pemex default risk affecting sovereign credit, Pemex refinancing impacting government budget)
+- Mexico crime, security, politics without a direct finance or economic link
+- General corporate Mexico news (manufacturing, retail, FMCG) unrelated to finance/credit/payments
+- International news without an explicit, specific Mexico connection
+- Minor regulatory updates, routine economic statistics releases without market-moving significance
+- Any story where the Mexico finance/credit/payments angle is indirect or requires multiple inferential steps
+
+Apply a HIGH BAR: if you are unsure whether an article is relevant, exclude it."""
 
 GROUPING_SYSTEM = """You are creating a concise Mexico financial & fintech weekly newsletter.
 Write in English. Be factual, precise, and concise. Focus on what matters to a financial professional.
+
+CATEGORY DEFINITIONS — assign exactly one per story:
+
+"macro" — Mexico macroeconomic indicators, political shifts, and regulatory/policy developments (enacted or announced but not yet effective) that affect finance, credit, or the payments industry. Examples: Banxico rate decisions, inflation data, CNBV regulation announcements, government fiscal policy changes, peso movements.
+
+"financial" — Business developments of specific named fintech or banking players (core OR non-core): product launches or changes (loans, credit cards, BNPL, Cuenta/savings, payments), funding rounds, major campaigns/promos, expansions (including overseas), partnerships, layoffs. RULE: the story must be PRIMARILY about one or more specific named players. The headline MUST include the player name(s). If a story mentions a player only in passing but is mainly about a macro/regulatory topic, use "macro" instead. For NON-CORE players (not in the core list below), add a parenthetical after the company name explaining their main business, e.g. "Covalto (SME digital lender focused on working-capital loans) announced…"
+
+"international" — General international events (not focused on specific players) with clear, direct, significant impact on Mexico's economy or financial sector. Examples: US tariff announcements affecting Mexico trade, global oil price moves and their effect on Mexico as an exporter, US remittance policy changes. RULE: if the international story is primarily about a specific core player's activity abroad (e.g. Nu launching in the US), use "financial" instead.
+
+CATEGORIZATION DECISION RULE:
+- Does the story center on one or more specific named financial players? → "financial"
+- Is it a general Mexico economic/policy/regulatory story? → "macro"
+- Is it a general international event with clear Mexico-wide impact (not player-specific)? → "international"
 
 CORE PLAYERS (well-known to readers — NO intro needed):
 - Fintech: Nu (Nubank), Mercado Pago, Stori, Plata, Kueski, Klar, Openbank, Uala (Ualá), Aplazo, Revolut, Clip, Conekta, Bitso, Kushki
@@ -293,8 +349,7 @@ CORE PLAYERS (well-known to readers — NO intro needed):
 
 For any OTHER financial company first mentioned in a summary, immediately after its name add a short parenthetical identifying its main business, e.g.:
   "Covalto (SME digital lender focused on working-capital loans) announced..."
-  "Fintual (robo-advisor platform for retail investors in Mexico and Chile) reported..."
-Keep the parenthetical to one concise phrase — do not repeat it if the company is mentioned again."""
+Keep the parenthetical to one concise phrase — do not repeat it if the company appears again."""
 
 
 def filter_relevant(articles, client, batch_size=25):
@@ -375,10 +430,10 @@ def group_and_summarize(articles, client):
             "Your tasks:\n"
             "1. GROUP articles that cover the SAME event/story (even if from different sources)\n"
             "2. For each group, write a 100-150 word English summary covering: what happened, key numbers/facts, and significance\n"
-            "3. Assign ONE category per group:\n"
-            '   - "macro": Macroeconomy, inflation, interest rates, peso, government policy, regulations\n'
-            '   - "financial": Any fintech or traditional bank news (Nu, Mercado Pago, BBVA, Santander, etc.)\n'
-            '   - "international": International events with specific impact on Mexico\n\n'
+            "3. Assign ONE category per group using these rules:\n"
+            '   - "macro": Mexico macro indicators, political shifts, regulatory/policy developments (enacted OR announced) affecting finance, credit, or payments\n'
+            '   - "financial": Stories PRIMARILY about specific named fintech or banking players (core OR non-core). Headline MUST name the player(s). For non-core players add a parenthetical intro in the summary, e.g. "Covalto (SME digital lender)". If a story only mentions a player in passing, use "macro" or "international" instead\n'
+            '   - "international": General international events (NOT player-specific) with clear direct impact on Mexico\'s economy. If the story is about a specific player\'s activity abroad, use "financial"\n\n'
             "Return ONLY a valid JSON array. Each element:\n"
             '{"title":"Descriptive English headline that fully captures the story — be specific with names, numbers, and outcomes (15-20 words if needed)","summary":"100-150 word English summary",'
             '"category":"macro|financial|international","article_ids":[list of IDs],'
@@ -1568,11 +1623,14 @@ async function publishChanges() {
   }
   var btn = document.querySelector('.btn-publish');
 
-  /* Serialize clean HTML: reset button, remove edit-mode, then snapshot */
+  /* Serialize clean HTML: reset button, remove edit-mode, collapse all cards, then snapshot */
   btn.innerHTML = '&#8679; Publish';
   btn.disabled = false;
   document.body.classList.remove('edit-mode');
-  var snapshot = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  var expandedCards = document.querySelectorAll('.card.expanded');
+  expandedCards.forEach(function(c){ c.classList.remove('expanded'); });
+  var snapshot = '<!DOCTYPE html>\\n' + document.documentElement.outerHTML;
+  expandedCards.forEach(function(c){ c.classList.add('expanded'); });
   document.body.classList.add('edit-mode');
 
   /* Now switch to saving state (after snapshot is taken) */
