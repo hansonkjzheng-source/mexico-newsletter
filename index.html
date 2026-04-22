@@ -1069,11 +1069,14 @@ async function publishChanges() {
   }
   var btn = document.querySelector('.btn-publish');
 
-  /* Serialize clean HTML: reset button, remove edit-mode, then snapshot */
+  /* Serialize clean HTML: reset button, remove edit-mode, collapse all cards, then snapshot */
   btn.innerHTML = '&#8679; Publish';
   btn.disabled = false;
   document.body.classList.remove('edit-mode');
+  var expandedCards = document.querySelectorAll('.card.expanded');
+  expandedCards.forEach(function(c){ c.classList.remove('expanded'); });
   var snapshot = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  expandedCards.forEach(function(c){ c.classList.add('expanded'); });
   document.body.classList.add('edit-mode');
 
   /* Now switch to saving state (after snapshot is taken) */
